@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.paul_nikki.cse5236.appointmentpal" >
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MainScreenActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".CreateLoginActivity"
+            android:label="@string/title_activity_create_login"
+            android:parentActivityName=".MainScreenActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.paul_nikki.cse5236.appointmentpal.MainScreenActivity" />
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login" >
+        </activity>
+        <activity
+            android:name=".BaseAccountActivity"
+            android:label="@string/title_activity_base_account_page" >
+        </activity>
+        <activity
+            android:name=".AppointmentsMainActivity"
+            android:label="@string/title_activity_appointments_page" >
+        </activity>
+        <activity
+            android:name=".AppointmentActivity"
+            android:label="@string/title_activity_appointment_page" >
+        </activity>
+        <activity
+            android:name=".NewAppointmentActivity"
+            android:label="@string/title_activity_new_appointment" >
+        </activity>
+        <activity
+            android:name=".LocationsMainActivity"
+            android:label="@string/title_activity_locations" >
+        </activity>
+        <activity
+            android:name=".LocationActivity"
+            android:label="@string/title_activity_location" >
+        </activity>
+        <activity
+            android:name=".ConfirmAppointmentActivity"
+            android:label="@string/title_activity_confirm_appointment" >
+        </activity>
+        <activity
+            android:name=".EditAppointmentActivity"
+            android:label="@string/title_activity_edit_appointment" >
+        </activity>
+        <activity
+            android:name=".CalenderActivity"
+            android:label="@string/title_activity_calender" >
+        </activity>
+        <activity
+            android:name=".MapActivity"
+            android:label="@string/title_activity_map" >
+        </activity>
+    </application>
+
+</manifest>
