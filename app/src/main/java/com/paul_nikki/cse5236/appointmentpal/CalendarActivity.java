@@ -8,8 +8,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.CalendarView;
+import android.widget.CalendarView.OnDateChangeListener;
 
-public class CalenderActivity extends AppCompatActivity implements View.OnClickListener{
+
+public class CalendarActivity extends AppCompatActivity implements View.OnClickListener{
 
     Button btnNext;
     TextView headerText;
@@ -18,18 +21,49 @@ public class CalenderActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //set layout of activity
+        setContentView(R.layout.activity_calendar);
+
+        //initialize calendar
+        initializeCalendar();
+
         doctorName = getIntent().getStringExtra("DoctorName");
-        setContentView(R.layout.activity_calender);
         btnNext = (Button)findViewById(R.id.btn_next);
         btnNext.setOnClickListener(this);
-        headerText = (TextView)findViewById(R.id.lbl_calenderHeader);
+        headerText = (TextView)findViewById(R.id.lbl_calendarHeader);
+
+    }
+
+    public void initializeCalendar(){
+
+        calendar = (CalendarView) findViewById(r.id.calendar);
+
+        calendar.setShowWeekNumber(false);
+
+        //colors
+        calendar.setSelectedWeekBackgroundColor(getResources().getColor(R.color.green));
+        calendar.setUnfocusedMonthDateColor(getResources().getColor(R.color.transparent));    
+        calendar.setWeekSeparatorLineColor(getResources().getColor(R.color.transparent));
+        calendar.setSelectedDateVerticalBar(getResources().getColor(R.color.darkgreen));
+
+        calendar.setOnDateChangeListener(new OnDateChangeListener(){
+
+            public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
+
+                //display the available appointment times for this day
+            }
+
+        }
+
+
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_calender, menu);
+        getMenuInflater().inflate(R.menu.menu_calendar, menu);
         return true;
     }
 
@@ -49,7 +83,7 @@ public class CalenderActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void GenerateHeader(){
-        String newheader = doctorName +"'s Calender";
+        String newheader = doctorName +"'s Calendar";
         headerText.setText(newheader);
     }
 

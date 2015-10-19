@@ -6,14 +6,19 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:paddingBottom="@dimen/activity_vertical_margin"
-                tools:context="com.paul_nikki.cse5236.appointmentpal.CalenderActivity">
+                tools:context="com.paul_nikki.cse5236.appointmentpal.CalendarActivity">
+    <CalendarView
+        android:id="@+id/calendar"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Dr. Smith&apos;s Calender"
-        android:id="@+id/lbl_calenderHeader"
+        android:text="Dr. Smith&apos;s Calendar"
+        android:id="@+id/lbl_calendarHeader"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:textSize="35dp"/>
@@ -24,7 +29,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="To be Done later"
         android:id="@+id/textView"
-        android:layout_below="@+id/lbl_calenderHeader"
+        android:layout_below="@+id/lbl_calendarHeader"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="120dp"/>
 
