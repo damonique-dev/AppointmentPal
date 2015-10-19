@@ -61,8 +61,8 @@
             android:label="@string/title_activity_edit_appointment" >
         </activity>
         <activity
-            android:name=".CalenderActivity"
-            android:label="@string/title_activity_calender" >
+            android:name=".CalendarActivity"
+            android:label="@string/title_activity_calendar" >
         </activity>
         <activity
             android:name=".MapActivity"

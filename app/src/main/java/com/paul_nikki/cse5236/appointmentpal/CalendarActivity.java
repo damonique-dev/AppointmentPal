@@ -1,7 +1,7 @@
 package com.paul_nikki.cse5236.appointmentpal;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,7 +12,7 @@ import android.widget.CalendarView;
 import android.widget.CalendarView.OnDateChangeListener;
 
 
-public class CalendarActivity extends AppCompatActivity implements View.OnClickListener{
+public class CalendarActivity extends FragmentActivity implements View.OnClickListener{
 
     Button btnNext;
     TextView headerText;
@@ -28,17 +28,19 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
         //initialize calendar
         initializeCalendar();
 
-        doctorName = getIntent().getStringExtra("DoctorName");
         btnNext = (Button)findViewById(R.id.btn_next);
         btnNext.setOnClickListener(this);
-        headerText = (TextView)findViewById(R.id.lbl_calendarHeader);
 
     }
 
     public void initializeCalendar(){
 
+        //set labels
         calendar = (CalendarView) findViewById(r.id.calendar);
+        headerText = (TextView) findViewById(R.id.lbl_calendarHeader);
+        doctorName = getIntent().getStringExtra("DoctorName");
 
+        //calendar settings
         calendar.setShowWeekNumber(false);
 
         //colors
@@ -51,7 +53,17 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
 
             public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
 
-                //display the available appointment times for this day
+                //TODO: look up available appoitnments for doctor & date 
+
+                FragmentManager fm = getSupportFragmentManager();
+                Fragment fragment = fm.findFragmentById(R.id.fragment_container);
+
+                if (fragment == null) {
+                    fragment = new TimeFragment();
+                    fm.beginTransaction()
+                        .add(R.id.fragment_container, fragment)
+                        .commit();
+                }
             }
 
         }
@@ -95,6 +107,8 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(intent);
                 break;
             default:
+               intent = new Intent(this, ConfirmAppointmentActivity.class);
+                startActivity(intent);
                 break;
         }
     }

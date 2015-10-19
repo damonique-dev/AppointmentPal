@@ -1,46 +1,11 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                tools:context="com.paul_nikki.cse5236.appointmentpal.CalendarActivity">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/fragment_container"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
     <CalendarView
         android:id="@+id/calendar"
         android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Dr. Smith&apos;s Calendar"
-        android:id="@+id/lbl_calendarHeader"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:textSize="35dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="To be Done later"
-        android:id="@+id/textView"
-        android:layout_below="@+id/lbl_calendarHeader"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="120dp"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Next->"
-        android:id="@+id/btn_next"
-        android:textSize="25dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="45dp"/>
-
-</RelativeLayout>
+</FrameLayout>
