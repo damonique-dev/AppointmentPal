@@ -64,7 +64,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Vie
                 startActivity(intent);
                 break;
             case R.id.btn_backToCalender:
-                intent = new Intent(this, CalenderActivity.class);
+                intent = new Intent(this, CalendarActivity.class);
                 startActivity(intent);
                 break;
             case R.id.btn_mapConfirm:

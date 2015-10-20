@@ -1,7 +1,11 @@
 package com.paul_nikki.cse5236.appointmentpal;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
-import android.support.v7.app.FragmentActivity;
+import android.os.Build;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,8 +16,8 @@ import android.widget.CalendarView;
 import android.widget.CalendarView.OnDateChangeListener;
 
 
-public class CalendarActivity extends FragmentActivity implements View.OnClickListener{
-
+public class CalendarActivity extends AppCompatActivity implements View.OnClickListener{
+    CalendarView calendar;
     Button btnNext;
     TextView headerText;
     String doctorName;
@@ -28,16 +32,17 @@ public class CalendarActivity extends FragmentActivity implements View.OnClickLi
         //initialize calendar
         initializeCalendar();
 
-        btnNext = (Button)findViewById(R.id.btn_next);
-        btnNext.setOnClickListener(this);
+        //btnNext = (Button)findViewById(R.id.btn_next);
+        //btnNext.setOnClickListener(this);
 
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void initializeCalendar(){
 
         //set labels
-        calendar = (CalendarView) findViewById(r.id.calendar);
-        headerText = (TextView) findViewById(R.id.lbl_calendarHeader);
+        calendar = (CalendarView) findViewById(R.id.calendar);
+        //headerText = (TextView) findViewById(R.id.lbl_calendarHeader);
         doctorName = getIntent().getStringExtra("DoctorName");
 
         //calendar settings
@@ -47,7 +52,7 @@ public class CalendarActivity extends FragmentActivity implements View.OnClickLi
         calendar.setSelectedWeekBackgroundColor(getResources().getColor(R.color.green));
         calendar.setUnfocusedMonthDateColor(getResources().getColor(R.color.transparent));    
         calendar.setWeekSeparatorLineColor(getResources().getColor(R.color.transparent));
-        calendar.setSelectedDateVerticalBar(getResources().getColor(R.color.darkgreen));
+        calendar.setSelectedDateVerticalBar(R.color.darkgreen);
 
         calendar.setOnDateChangeListener(new OnDateChangeListener(){
 
@@ -66,7 +71,7 @@ public class CalendarActivity extends FragmentActivity implements View.OnClickLi
                 }
             }
 
-        }
+        });
 
 
 
@@ -75,7 +80,7 @@ public class CalendarActivity extends FragmentActivity implements View.OnClickLi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_calendar, menu);
+       // getMenuInflater().inflate(R.menu.menu_calendar, menu);
         return true;
     }
 
@@ -102,10 +107,10 @@ public class CalendarActivity extends FragmentActivity implements View.OnClickLi
     public void onClick(View v){
         Intent intent;
         switch (v.getId()){
-            case R.id.btn_next:
+            /*case R.id.btn_next:
                 intent = new Intent(this, ConfirmAppointmentActivity.class);
                 startActivity(intent);
-                break;
+                break; */
             default:
                intent = new Intent(this, ConfirmAppointmentActivity.class);
                 startActivity(intent);

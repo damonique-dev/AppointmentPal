@@ -13,6 +13,6 @@
     <string name="title_activity_location">LocationActivity</string>
     <string name="title_activity_confirm_appointment">ConfirmAppointmentActivity</string>
     <string name="title_activity_edit_appointment">EditAppointmentActivity</string>
-    <string name="title_activity_calender">CalenderActivity</string>
+    <string name="title_activity_calendar">CalendarActivity</string>
     <string name="title_activity_map">MapActivity</string>
 </resources>

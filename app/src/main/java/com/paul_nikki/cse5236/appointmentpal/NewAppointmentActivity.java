@@ -64,7 +64,7 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
 //                startActivity(intent);
                 break;
             case R.id.btn_fromSchedule:
-                intent = new Intent(this, CalenderActivity.class);
+                intent = new Intent(this, CalendarActivity.class);
                 //Get doctor name from chosen doctor ddl!
                 intent.putExtra("DoctorName", "Dr. Doctor");
                 startActivity(intent);
