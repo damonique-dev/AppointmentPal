@@ -24,7 +24,6 @@ public class CreateLoginActivity extends AppCompatActivity implements View.OnCli
     EditText addressTextField;
     EditText ageTextField;
     EditText confirmPasswordTextField;
-    EditText birthdayTextField;
     Button btnCreate;
     User newUser;
 
@@ -36,13 +35,17 @@ public class CreateLoginActivity extends AppCompatActivity implements View.OnCli
         firstNameTextField = (EditText)findViewById(R.id.txt_firstName);
         lastNameTextField = (EditText)findViewById(R.id.txt_lastName);
         emailTextField = (EditText)findViewById(R.id.txt_email);
-        birthdayTextField = (EditText)findViewById(R.id.txt_birthday);
         passwordTextField = (EditText)findViewById(R.id.txt_Password);
         addressTextField = (EditText)findViewById(R.id.txt_address);
+        phoneNumberTextField = (EditText)findViewById(R.id.)
         confirmPasswordTextField = (EditText)findViewById(R.id.txt_comfirmPassword);
         btnCreate = (Button)findViewById(R.id.btn_create);
         btnCreate.setOnClickListener(this);
-        newUser = new User();
+
+        if(passwordTextField != confirmPasswordTextField){
+            newUser = new User(firstNameTextField, lastNameTextField, emailTextField, addressTextField, passwordTextField, );
+        }
+
     }
 
     @Override

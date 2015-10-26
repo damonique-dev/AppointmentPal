@@ -6,16 +6,21 @@ import java.util.Vector;
  * Created by nikkbandy on 10/13/15.
  */
 public class User {
-    String firstName;
-    String lastName;
-    String email;
-    String address;
-    String phoneNumber;
-    Date birthday;
-    String password;
-    Vector<Appointment> appts;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String address;
+    private String phoneNumber;
+    private String password;
+    private Vector<Appointment> appts;
 
-    public User(){
+    public User(String FN, String LN, String mail, String addr, String phNo, String pwd){
+        //TODO: validation & encryption (?)
+        firstName = FN;
+        lastName = LN;
+        email = mail;
+        address = addr;
+        password = pwd;
     }
 
     public Appointment[] getAppointments(){

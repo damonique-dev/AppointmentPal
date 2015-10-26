@@ -1,97 +1,82 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:orientation="vertical"
-  >
- <Button
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/root"
+    android:stretchColumns="*"
+    android:background="#000000"
+    android:layout_gravity="bottom">
+    <TableRow android:layout_margin="0dip"
+        android:id="@+id/first_row" >
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:theme="@android:style/Theme.Holo"
         android:text="8:00AM"
         android:id="@+id/btn_8"
-        android:textSize="25dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="45dp"/>
+        android:textSize="25dp"/>
 
  <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:theme="@android:style/Theme.Holo"
         android:text="9:00AM"
         android:id="@+id/btn_9"
-        android:textSize="25dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="45dp"/>
+        android:textSize="25dp" />
 <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:theme="@android:style/Theme.Holo"
         android:text="10:00AM"
         android:id="@+id/btn_10"
-        android:textSize="25dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="45dp"/>
+        android:textSize="25dp" />
+    </TableRow>
+    <TableRow android:layout_margin="0dip"
+        android:id="@+id/second_row" >
 <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:theme="@android:style/Theme.Holo"
         android:text="11:00AM"
         android:id="@+id/btn_11"
-        android:textSize="25dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="45dp"/>
+        android:textSize="25dp" />
 <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:theme="@android:style/Theme.Holo"
         android:text="12:00PM"
         android:id="@+id/btn_12"
-        android:textSize="25dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="45dp"/>
+        android:textSize="25dp" />
 <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:theme="@android:style/Theme.Holo"
         android:text="1:00PM"
         android:id="@+id/btn_1"
-        android:textSize="25dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="45dp"/>   
+        android:textSize="25dp" />
+    </TableRow>
+    <TableRow android:layout_margin="0dip"
+        android:id="@+id/third_row" >
 <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:theme="@android:style/Theme.Holo"
         android:text="2:00PM"
         android:id="@+id/btn_2"
-        android:textSize="25dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="45dp"/>   
+        android:textSize="25dp"/>
 <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:theme="@android:style/Theme.Holo"
         android:text="3:00PM"
         android:id="@+id/btn_3"
-        android:textSize="25dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="45dp"/> 
+        android:textSize="25dp"/>
 <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:theme="@android:style/Theme.Holo"
         android:text="4:00PM"
         android:id="@+id/btn_4"
-        android:textSize="25dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="45dp"/>
-<Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="5:00PM"
-        android:id="@+id/btn_5"
-        android:textSize="25dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="45dp"/>
-</LinearLayout>
+        android:textSize="25dp"/>
+
+</TableRow>
+</TableLayout>
