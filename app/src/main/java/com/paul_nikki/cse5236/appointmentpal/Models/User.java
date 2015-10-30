@@ -1,4 +1,6 @@
-package com.paul_nikki.cse5236.appointmentpal;
+package com.paul_nikki.cse5236.appointmentpal.Models;
+import com.paul_nikki.cse5236.appointmentpal.Models.Appointment;
+
 import java.util.Date;
 import java.util.Vector;
 

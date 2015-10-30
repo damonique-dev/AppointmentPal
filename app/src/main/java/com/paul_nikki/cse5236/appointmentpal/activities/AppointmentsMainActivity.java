@@ -12,11 +12,13 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.paul_nikki.cse5236.appointmentpal.Appointment;
+import com.paul_nikki.cse5236.appointmentpal.Helper.AppointmentAdapter;
+import com.paul_nikki.cse5236.appointmentpal.Models.Appointment;
 import com.paul_nikki.cse5236.appointmentpal.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class AppointmentsMainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener{
@@ -24,7 +26,7 @@ public class AppointmentsMainActivity extends AppCompatActivity implements View.
     Button btnNewAppt;
     TextView lblApptNumGreeting;
     ListView apptListView;
-    String[] apptList;
+    ArrayList<Appointment> arrayOfAppts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +39,6 @@ public class AppointmentsMainActivity extends AppCompatActivity implements View.
         apptListView = (ListView)findViewById(R.id.listView);
         apptListView.setOnItemClickListener(this);
         GenerateApptListView();
-        UpdateGreeting();
     }
 
     @Override
@@ -63,28 +64,40 @@ public class AppointmentsMainActivity extends AppCompatActivity implements View.
     }
     public void GenerateApptListView(){
         //Example Array until database is setup
-        SimpleDateFormat dateformat2 = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+        SimpleDateFormat dateformat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");
 
         //call web service, get appointments
         String strdate = "11-04-2015 9:00:00";
         try {
-            Date dateAppt = dateformat2.parse(strdate);
+            Date dateAppt = dateformat.parse(strdate);
             Appointment one = new Appointment(dateAppt, "Dr. Smith", "3401 Morse Crossing Road Columbus OH 43215");
+            ArrayList<Appointment> arrayOfAppts = new ArrayList<Appointment>();
+            arrayOfAppts.add(one);
+            // Create the adapter to convert the array to views
+            AppointmentAdapter adapter = new AppointmentAdapter(this, arrayOfAppts);
+            // Attach the adapter to a ListView
+            ListView listView = (ListView) findViewById(R.id.listView);
+            listView.setAdapter(adapter);
+            adapter.add(one);
+            int numOfAppt = arrayOfAppts.size();
+            String greeting = String.format("You have %d Appointments!", numOfAppt);
+            if( numOfAppt == 1) {
+                greeting = String.format("You have %d Appointment!", numOfAppt);
+            }
+
+            lblApptNumGreeting.setText(greeting);
+
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Appointment one = new Appointment(apt, "Dr. Smith", "3501")
-        apptList = new Appointment[] {};
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, apptList);
-        apptListView.setAdapter(arrayAdapter);
+
+
+
+
     }
 
-    public void UpdateGreeting(){
-        int numOfAppt = apptList.length;
-        String greeting = String.format("You have %d Appointment(s)!", numOfAppt);
-        lblApptNumGreeting.setText(greeting);
-    }
 
     public void onClick(View v){
         Intent intent;

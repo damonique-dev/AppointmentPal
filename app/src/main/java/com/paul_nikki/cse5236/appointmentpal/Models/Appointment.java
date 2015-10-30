@@ -1,4 +1,4 @@
-package com.paul_nikki.cse5236.appointmentpal;
+package com.paul_nikki.cse5236.appointmentpal.Models;
 
 import java.util.Date;
 import java.util.UUID;

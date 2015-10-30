@@ -20,8 +20,7 @@
         </activity>
         <activity
             android:name=".Activities.CreateLoginActivity"
-            android:label="@string/title_activity_create_login"
-            android:parentActivityName="Activities.MainScreenActivity" >
+            android:label="@string/title_activity_create_login">
         </activity>
         <activity
             android:name=".Activities.MainScreenActivity"
