@@ -5,8 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name="com.paul_nikki.cse5236.appointmentpal.Controllers.AppController"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
@@ -22,9 +22,6 @@
             android:name=".Activities.CreateLoginActivity"
             android:label="@string/title_activity_create_login"
             android:parentActivityName="Activities.MainScreenActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.paul_nikki.cse5236.appointmentpal.Activities.LoginActivity" />
         </activity>
         <activity
             android:name=".Activities.MainScreenActivity"

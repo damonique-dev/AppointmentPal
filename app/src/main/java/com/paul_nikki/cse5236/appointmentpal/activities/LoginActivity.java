@@ -22,19 +22,20 @@ import java.util.HashMap;
 import java.util.Map;
  
 import com.paul_nikki.cse5236.appointmentpal.R;
-import com.paul_nikki.cse5236.appointmentpal.appConfig;
-import com.paul_nikki.cse5236.appointmentpal.Controllers.appController;
+import com.paul_nikki.cse5236.appointmentpal.AppConfig;
+import com.paul_nikki.cse5236.appointmentpal.Controllers.AppController;
 import com.paul_nikki.cse5236.appointmentpal.Helper.SQLiteHandler;
-import com.paul_nikki.cse5236.appointmentpal.Helper.sessionManager;
+import com.paul_nikki.cse5236.appointmentpal.Helper.SessionManager;
  
 public class LoginActivity extends Activity {
     private static final String TAG = LoginActivity.class.getSimpleName();
     private Button btnLogin;
     private Button btnLinkToRegister;
+    private Button btnBypassLogin;
     private EditText inputEmail;
     private EditText inputPassword;
     private ProgressDialog pDialog;
-    private sessionManager session;
+    private SessionManager session;
     private SQLiteHandler db;
  
     @Override
@@ -47,6 +48,7 @@ public class LoginActivity extends Activity {
         inputPassword = (EditText) findViewById(R.id.password);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
+        btnBypassLogin = (Button) findViewById(R.id.bypassLogin);
  
         // Progress dialog
         pDialog = new ProgressDialog(this);
@@ -56,7 +58,7 @@ public class LoginActivity extends Activity {
         db = new SQLiteHandler(getApplicationContext());
  
         // Session manager
-        session = new sessionManager(getApplicationContext());
+        session = new SessionManager(getApplicationContext());
  
         // Check if user is already logged in or not
         if (session.isLoggedIn()) {
@@ -93,6 +95,19 @@ public class LoginActivity extends Activity {
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(),
                         CreateLoginActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        btnBypassLogin.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                String email = inputEmail.getText().toString().trim();
+
+                Intent i = new Intent(getApplicationContext(),
+                        MainScreenActivity.class);
+                i.putExtra("email", email);
                 startActivity(i);
                 finish();
             }
@@ -143,7 +158,7 @@ public class LoginActivity extends Activity {
         showDialog();
  
         StringRequest strReq = new StringRequest(Method.POST,
-                appConfig.URL_LOGIN, new Response.Listener<String>() {
+                AppConfig.URL_LOGIN, new Response.Listener<String>() {
  
             @Override
             public void onResponse(String response) {
@@ -166,11 +181,11 @@ public class LoginActivity extends Activity {
                         JSONObject user = jObj.getJSONObject("user");
                         String name = user.getString("name");
                         String email = user.getString("email");
-                        String created_at = user
-                                .getString("created_at");
+                        String phoneno = user
+                                .getString("phoneno");
  
                         // Inserting row in users table
-                        db.addUser(name, email, uid, created_at);
+                        db.addUser(name, uid, email, phoneno);
  
                         // Launch main activity
                         Intent intent = new Intent(LoginActivity.this,
@@ -214,7 +229,7 @@ public class LoginActivity extends Activity {
         };
  
         // Adding request to request queue
-        appController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
  
     private void showDialog() {

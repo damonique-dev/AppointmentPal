@@ -1,16 +1,17 @@
 <?php
 
-require_once 'include/DB_Functions.php';
-$db = new DB_Functions();
+require_once 'include/DB_functions.php';
+$db = new DB_functions();
 
 // json response array
 $response = array("error" => FALSE);
 
-if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['password'])) {
+if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['phoneno']) && isset($_POST['password'])) {
 	
 	// receiving the post params
 	$name = $_POST['name'];
 	$email = $_POST['email'];
+	$phoneno = $_POST['phoneno'];
 	$password = $_POST['password'];
 
 	// check if user is already existed with the same email
@@ -21,15 +22,14 @@ if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['password'])
 		echo json_encode($response);
 	} else {
 		// create a new user
-		$user = $db->storeUser($name, $email, $password);
+		$user = $db->storeUser($name, $email, $phoneno, $password);
 		if ($user) {
 			// user stored successfully
 			$response["error"] = FALSE;
 			$response["uid"] = $user["unique_id"];
 			$response["user"]["name"] = $user["name"];
 			$response["user"]["email"] = $user["email"];
-			$response["user"]["created_at"] = $user["created_at"];
-			$response["user"]["updated_at"] = $user["update_at"];
+			$response["user"]["phoneno"] = $user["phoneno"];
 			echo json_encode($response);
 		}
 		else {
@@ -40,7 +40,7 @@ if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['password'])
 	}
 } else {
 	$response["error"] = TRUE;
-	$response["error_msg"] = "Required parameters, (name, email or password) is missing!";
+	$response["error_msg"] = "Required parameters, (name, email, phone number or password) is missing!";
 	echo json_encode($response);
 }
 

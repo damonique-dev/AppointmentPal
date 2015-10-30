@@ -12,7 +12,12 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.paul_nikki.cse5236.appointmentpal.Appointment;
 import com.paul_nikki.cse5236.appointmentpal.R;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class AppointmentsMainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener{
 
@@ -20,6 +25,7 @@ public class AppointmentsMainActivity extends AppCompatActivity implements View.
     TextView lblApptNumGreeting;
     ListView apptListView;
     String[] apptList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +63,18 @@ public class AppointmentsMainActivity extends AppCompatActivity implements View.
     }
     public void GenerateApptListView(){
         //Example Array until database is setup
-        apptList = new String[] {"Appointment 1", "Appointment 2", "Appointment 3", "Appointment 4", "Appointment 5",};
+        SimpleDateFormat dateformat2 = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+
+        //call web service, get appointments
+        String strdate = "11-04-2015 9:00:00";
+        try {
+            Date dateAppt = dateformat2.parse(strdate);
+            Appointment one = new Appointment(dateAppt, "Dr. Smith", "3401 Morse Crossing Road Columbus OH 43215");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Appointment one = new Appointment(apt, "Dr. Smith", "3501")
+        apptList = new Appointment[] {};
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, apptList);
         apptListView.setAdapter(arrayAdapter);

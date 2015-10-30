@@ -21,15 +21,15 @@ class DB_Functions {
 	* Storing new user
 	* return user details
 	*/
-	public function storeUser($name, $email, $password) {
+	public function storeUser($name, $email, $phoneno, $password) {
 		$uuid = uniqid('', true);
 		$hash = $this->hashSSHA($password);
 		$encrypted_password = $hash["encrypted"]; //encrypted password
 		$salt = $hash["salt"]; // salt
 
-		$stmt = $this->conn->prepare("INSERT INTO users(unique_id, name, email, encrypted_password, salt, created_at) VALUES(?, ?, ?, ?, ?, NOW())");
-		$stmt->bind_param("sssss", $uuid, $name, $email, $encrypted_password, $salt);
-		$result = #stmt->execute();
+		$stmt = $this->conn->prepare("INSERT INTO users(unique_id, name, email, phoneno, encrypted_password, salt) VALUES(?, ?, ?, ?, ?, ?)");
+		$stmt->bind_param("sssss", $uuid, $name, $email, $phoneno, $encrypted_password, $salt);
+		$result = $stmt->execute();
 		$stmt->close();
 
 		// check for successful store
@@ -54,7 +54,7 @@ class DB_Functions {
 	* Get user by email and password
 	*/
 	public function getUserByEmailAndPassword($email, $password){
-		$stmt = $this->conn->prepare("SELECT * FROM users WHERE email = ?");
+		$stmt = $this->conn->prepare("SELECT * FROM PATIENT WHERE email = ?");
 
 		$stmt->bind_param("s", $email);
 
@@ -63,6 +63,34 @@ class DB_Functions {
 			$stmt->close();
 			return $user;
 		} else {
+			return NULL;
+		}
+
+	}
+
+	public function getDoctors(){
+		
+		$stmt = $this->conn->prepare("SELECT NAME FROM doctor;");
+
+		$stmt->execute();
+
+		$doctors = $stmt->get_result()->fetch_assoc();
+
+		return $doctors;
+	}
+
+	public function getAppointmentsByDoctor($doctorName){
+
+		$stmt = $this->conn->prepare("SELECT datetime FROM appointment WHERE dname = ?");
+
+		$stmt->bind_param("s", $doctorName);
+
+		if($stmt->execute()){
+			$appointments = $stmt->get_result()->fetch_assoc();
+			$stmt->close();
+			return $appointment;
+		}
+		else{
 			return NULL;
 		}
 

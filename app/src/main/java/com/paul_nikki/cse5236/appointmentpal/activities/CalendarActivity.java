@@ -20,7 +20,6 @@ import com.paul_nikki.cse5236.appointmentpal.R;
 
 public class CalendarActivity extends AppCompatActivity implements View.OnClickListener{
     CalendarView calendar;
-    Button btnNext;
     TextView headerText;
     String doctorName;
 
@@ -33,9 +32,6 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
 
         //initialize calendar
         initializeCalendar();
-
-        //btnNext = (Button)findViewById(R.id.btn_next);
-        //btnNext.setOnClickListener(this);
 
     }
 
@@ -60,7 +56,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
 
             public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
 
-                //TODO: look up available appoitnments for doctor & date 
+                //TODO: look up available appointments for doctor & date
 
                 FragmentManager fm = getSupportFragmentManager();
                 Fragment fragment = fm.findFragmentById(R.id.fragment_container);

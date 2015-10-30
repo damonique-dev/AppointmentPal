@@ -1,7 +1,7 @@
 package com.paul_nikki.cse5236.appointmentpal.Activities;
  
 import com.paul_nikki.cse5236.appointmentpal.Helper.SQLiteHandler;
-import com.paul_nikki.cse5236.appointmentpal.Helper.sessionManager;
+import com.paul_nikki.cse5236.appointmentpal.Helper.SessionManager;
 import com.paul_nikki.cse5236.appointmentpal.R;
 
 import java.util.HashMap;
@@ -22,7 +22,7 @@ public class MainScreenActivity extends Activity {
     private Button btnLogout;
  
     private SQLiteHandler db;
-    private sessionManager session;
+    private SessionManager session;
  
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +34,12 @@ public class MainScreenActivity extends Activity {
         btnLogout = (Button) findViewById(R.id.btnLogout);
         btnAppointments = (Button) findViewById(R.id.btnAppointments);
         btnLocations = (Button) findViewById(R.id.btnLocations);
- 
+ /* commenting out some of the web service stuff for now
         // SqLite database handler
         db = new SQLiteHandler(getApplicationContext());
  
         // session manager
-        session = new sessionManager(getApplicationContext());
+        session = new SessionManager(getApplicationContext());
  
         if (!session.isLoggedIn()) {
             logoutUser();
@@ -48,12 +48,16 @@ public class MainScreenActivity extends Activity {
         // Fetching user details from sqlite
         HashMap<String, String> user = db.getUserDetails();
  
-        String name = user.get("name");
-        String email = user.get("email");
- 
+       // won't use this for now
+       // String name = user.get("name");
+       // String email = user.get("email");
+       */
+        Intent i = getIntent();
+        String email = "Hello, "+ i.getStringExtra("email");
+
         // Displaying the user details on the screen
-        txtName.setText(name);
-        txtEmail.setText(email);
+        txtName.setText(email);
+
  
         // Logout button click event
         btnLogout.setOnClickListener(new View.OnClickListener() {

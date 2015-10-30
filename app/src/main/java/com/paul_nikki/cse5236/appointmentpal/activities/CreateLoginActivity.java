@@ -22,10 +22,10 @@ import java.util.HashMap;
 import java.util.Map;
  
 import com.paul_nikki.cse5236.appointmentpal.R;
-import com.paul_nikki.cse5236.appointmentpal.appConfig;
-import com.paul_nikki.cse5236.appointmentpal.Controllers.appController;
+import com.paul_nikki.cse5236.appointmentpal.AppConfig;
+import com.paul_nikki.cse5236.appointmentpal.Controllers.AppController;
 import com.paul_nikki.cse5236.appointmentpal.Helper.SQLiteHandler;
-import com.paul_nikki.cse5236.appointmentpal.Helper.sessionManager;
+import com.paul_nikki.cse5236.appointmentpal.Helper.SessionManager;
 
 
 public class CreateLoginActivity extends Activity {
@@ -35,8 +35,9 @@ public class CreateLoginActivity extends Activity {
     private EditText inputFullName;
     private EditText inputEmail;
     private EditText inputPassword;
+    private EditText inputPhoneNo;
     private ProgressDialog pDialog;
-    private sessionManager session;
+    private SessionManager session;
     private SQLiteHandler db;
  
     @Override
@@ -46,6 +47,7 @@ public class CreateLoginActivity extends Activity {
  
         inputFullName = (EditText) findViewById(R.id.name);
         inputEmail = (EditText) findViewById(R.id.email);
+        inputPhoneNo = (EditText) findViewById(R.id.phoneno);
         inputPassword = (EditText) findViewById(R.id.password);
         btnRegister = (Button) findViewById(R.id.btnRegister);
         btnLinkToLogin = (Button) findViewById(R.id.btnLinkToLoginScreen);
@@ -55,7 +57,7 @@ public class CreateLoginActivity extends Activity {
         pDialog.setCancelable(false);
  
         // Session manager
-        session = new sessionManager(getApplicationContext());
+        session = new SessionManager(getApplicationContext());
  
         // SQLite database handler
         db = new SQLiteHandler(getApplicationContext());
@@ -72,12 +74,14 @@ public class CreateLoginActivity extends Activity {
         // Register Button Click event
         btnRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+
                 String name = inputFullName.getText().toString().trim();
                 String email = inputEmail.getText().toString().trim();
+                String phoneno = inputPhoneNo.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
  
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-                    registerUser(name, email, password);
+                    registerUser(name, email, phoneno, password);
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "Please enter your details!", Toast.LENGTH_LONG)
@@ -103,7 +107,7 @@ public class CreateLoginActivity extends Activity {
      * Function to store user in MySQL database will post params(tag, name,
      * email, password) to register url
      * */
-    private void registerUser(final String name, final String email,
+    private void registerUser(final String name, final String email, final String phoneno,
                               final String password) {
         // Tag used to cancel the request
         String tag_string_req = "req_register";
@@ -112,7 +116,7 @@ public class CreateLoginActivity extends Activity {
         showDialog();
  
         StringRequest strReq = new StringRequest(Method.POST,
-                appConfig.URL_REGISTER, new Response.Listener<String>() {
+                AppConfig.URL_REGISTER, new Response.Listener<String>() {
  
             @Override
             public void onResponse(String response) {
@@ -130,11 +134,11 @@ public class CreateLoginActivity extends Activity {
                         JSONObject user = jObj.getJSONObject("user");
                         String name = user.getString("name");
                         String email = user.getString("email");
-                        String created_at = user
-                                .getString("created_at");
+                        String phoneno = user
+                                .getString("phoneno");
  
                         // Inserting row in users table
-                        db.addUser(name, email, uid, created_at);
+                        db.addUser(name, email, uid, phoneno);
  
                         Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
  
@@ -174,6 +178,7 @@ public class CreateLoginActivity extends Activity {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("name", name);
                 params.put("email", email);
+                params.put("phoneno", phoneno);
                 params.put("password", password);
  
                 return params;
@@ -182,7 +187,7 @@ public class CreateLoginActivity extends Activity {
         };
  
         // Adding request to request queue
-        appController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
  
     private void showDialog() {
