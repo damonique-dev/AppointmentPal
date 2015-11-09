@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.paul_nikki.cse5236.appointmentpal" >
+    package="com.paul_nikki.cse5236.appointmentpal">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:name="com.paul_nikki.cse5236.appointmentpal.Controllers.AppController"
         android:allowBackup="true"

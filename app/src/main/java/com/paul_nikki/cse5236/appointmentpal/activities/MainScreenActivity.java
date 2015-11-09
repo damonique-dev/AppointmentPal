@@ -15,7 +15,7 @@ import android.widget.TextView;
  
 public class MainScreenActivity extends Activity {
  
-    private TextView txtName;
+    private TextView txtGreeting;
     private TextView txtEmail;
     private Button btnAppointments;
     private Button btnLocations;
@@ -29,34 +29,25 @@ public class MainScreenActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
 
-        txtName = (TextView) findViewById(R.id.name);
+        txtGreeting = (TextView) findViewById(R.id.name);
         txtEmail = (TextView) findViewById(R.id.email);
         btnLogout = (Button) findViewById(R.id.btnLogout);
         btnAppointments = (Button) findViewById(R.id.btnAppointments);
         btnLocations = (Button) findViewById(R.id.btnLocations);
- /* commenting out some of the web service stuff for now
-        // SqLite database handler
-        db = new SQLiteHandler(getApplicationContext());
+
  
-        // session manager
         session = new SessionManager(getApplicationContext());
  
         if (!session.isLoggedIn()) {
             logoutUser();
         }
  
-        // Fetching user details from sqlite
-        HashMap<String, String> user = db.getUserDetails();
- 
-       // won't use this for now
-       // String name = user.get("name");
-       // String email = user.get("email");
-       */
+        
         Intent i = getIntent();
-        String email = "Hello, "+ i.getStringExtra("email");
+        String greeting = "Hello, "+ i.getStringExtra("name");
 
         // Displaying the user details on the screen
-        txtName.setText(email);
+        txtGreeting.setText(greeting);
 
  
         // Logout button click event

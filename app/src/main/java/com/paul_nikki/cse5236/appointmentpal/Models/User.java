@@ -8,21 +8,17 @@ import java.util.Vector;
  * Created by nikkbandy on 10/13/15.
  */
 public class User {
-    private String firstName;
-    private String lastName;
+    private String name;
+    private String uuid;
     private String email;
-    private String address;
-    private String phoneNumber;
-    private String password;
     private Vector<Appointment> appts;
 
-    public User(String FN, String LN, String mail, String addr, String phNo, String pwd){
+    public User(String nm, String uuid, String mail){
         //TODO: validation & encryption (?)
-        firstName = FN;
-        lastName = LN;
+        name = nm;
+        uuid = uuid;
         email = mail;
-        address = addr;
-        password = pwd;
+
     }
 
     public Appointment[] getAppointments(){

@@ -30,8 +30,8 @@ import com.paul_nikki.cse5236.appointmentpal.Helper.SessionManager;
 public class LoginActivity extends Activity {
     private static final String TAG = LoginActivity.class.getSimpleName();
     private Button btnLogin;
+
     private Button btnLinkToRegister;
-    private Button btnBypassLogin;
     private EditText inputEmail;
     private EditText inputPassword;
     private ProgressDialog pDialog;
@@ -40,6 +40,7 @@ public class LoginActivity extends Activity {
  
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate(bundle) called");
         setContentView(R.layout.activity_login);
@@ -48,14 +49,10 @@ public class LoginActivity extends Activity {
         inputPassword = (EditText) findViewById(R.id.password);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
-        btnBypassLogin = (Button) findViewById(R.id.bypassLogin);
  
         // Progress dialog
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
- 
-        // SQLite database handler
-        db = new SQLiteHandler(getApplicationContext());
  
         // Session manager
         session = new SessionManager(getApplicationContext());
@@ -95,19 +92,6 @@ public class LoginActivity extends Activity {
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(),
                         CreateLoginActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
-
-        btnBypassLogin.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
-                String email = inputEmail.getText().toString().trim();
-
-                Intent i = new Intent(getApplicationContext(),
-                        MainScreenActivity.class);
-                i.putExtra("email", email);
                 startActivity(i);
                 finish();
             }
@@ -176,16 +160,9 @@ public class LoginActivity extends Activity {
                         session.setLogin(true);
  
                         // Now store the user in SQLite
-                        String uid = jObj.getString("uid");
- 
-                        JSONObject user = jObj.getJSONObject("user");
-                        String name = user.getString("name");
-                        String email = user.getString("email");
-                        String phoneno = user
-                                .getString("phoneno");
- 
-                        // Inserting row in users table
-                        db.addUser(name, uid, email, phoneno);
+                        String uid = jObj.getString("uuid");
+                        String username = jObj.getString("nm");
+                        //pass these to main screen with intent i guess
  
                         // Launch main activity
                         Intent intent = new Intent(LoginActivity.this,

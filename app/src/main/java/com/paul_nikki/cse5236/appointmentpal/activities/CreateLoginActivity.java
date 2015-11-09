@@ -24,7 +24,6 @@ import java.util.Map;
 import com.paul_nikki.cse5236.appointmentpal.R;
 import com.paul_nikki.cse5236.appointmentpal.AppConfig;
 import com.paul_nikki.cse5236.appointmentpal.Controllers.AppController;
-import com.paul_nikki.cse5236.appointmentpal.Helper.SQLiteHandler;
 import com.paul_nikki.cse5236.appointmentpal.Helper.SessionManager;
 
 
@@ -80,7 +79,7 @@ public class CreateLoginActivity extends Activity {
                 String phoneno = inputPhoneNo.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
  
-                if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
+                if (!name.isEmpty() && !email.isEmpty() && !phoneno.isEmpty() && !password.isEmpty()) {
                     registerUser(name, email, phoneno, password);
                 } else {
                     Toast.makeText(getApplicationContext(),
@@ -154,7 +153,7 @@ public class CreateLoginActivity extends Activity {
                         // message
                         String errorMsg = jObj.getString("error_msg");
                         Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
+                                errorMsg+"     :::THEERROR might be blank but there was an error in registration.", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
