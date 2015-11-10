@@ -24,7 +24,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="You have 1 appointment(s)"
         android:textColor="@color/white"
         android:id="@+id/lbl_numberAppt"
         android:layout_below="@+id/lbl_appts"
@@ -35,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lbl_numberAppt"
-        android:id="@+id/listView"
+        android:id="@+id/android:list"
         android:layout_marginBottom="100dp"
         />
     <Button

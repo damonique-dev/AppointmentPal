@@ -20,11 +20,11 @@ import org.json.JSONObject;
  
 import java.util.HashMap;
 import java.util.Map;
- 
+
+import com.paul_nikki.cse5236.appointmentpal.Models.User;
 import com.paul_nikki.cse5236.appointmentpal.R;
 import com.paul_nikki.cse5236.appointmentpal.AppConfig;
 import com.paul_nikki.cse5236.appointmentpal.Controllers.AppController;
-import com.paul_nikki.cse5236.appointmentpal.Helper.SQLiteHandler;
 import com.paul_nikki.cse5236.appointmentpal.Helper.SessionManager;
  
 public class LoginActivity extends Activity {
@@ -36,7 +36,6 @@ public class LoginActivity extends Activity {
     private EditText inputPassword;
     private ProgressDialog pDialog;
     private SessionManager session;
-    private SQLiteHandler db;
  
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -151,27 +150,29 @@ public class LoginActivity extends Activity {
  
                 try {
                     JSONObject jObj = new JSONObject(response);
-                    boolean error = jObj.getBoolean("error");
+                    String error = jObj.getString("error");
  
                     // Check for error node in json
-                    if (!error) {
+                    if (error.equals("0")) {
                         // user successfully logged in
-                        // Create login session
-                        session.setLogin(true);
- 
-                        // Now store the user in SQLite
                         String uid = jObj.getString("uuid");
-                        String username = jObj.getString("nm");
-                        //pass these to main screen with intent i guess
- 
+                        String username = jObj.getString("User");
+                        // Create login session
+                        User you = new User (username, uid, email);
+
+                        session.setLogin(true);
+
                         // Launch main activity
                         Intent intent = new Intent(LoginActivity.this,
                                 MainScreenActivity.class);
+                        intent.putExtra("name", username);
+                        intent.putExtra("email", email);
+                        intent.putExtra("uuid", uid);
                         startActivity(intent);
                         finish();
                     } else {
                         // Error in login. Get the error message
-                        String errorMsg = jObj.getString("error_msg");
+                        String errorMsg = "error in login";//jObj.getString("error_msg");
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                     }

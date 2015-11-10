@@ -1,7 +1,7 @@
 package com.paul_nikki.cse5236.appointmentpal.Activities;
- 
-import com.paul_nikki.cse5236.appointmentpal.Helper.SQLiteHandler;
+
 import com.paul_nikki.cse5236.appointmentpal.Helper.SessionManager;
+import com.paul_nikki.cse5236.appointmentpal.Models.User;
 import com.paul_nikki.cse5236.appointmentpal.R;
 
 import java.util.HashMap;
@@ -20,8 +20,7 @@ public class MainScreenActivity extends Activity {
     private Button btnAppointments;
     private Button btnLocations;
     private Button btnLogout;
- 
-    private SQLiteHandler db;
+
     private SessionManager session;
  
     @Override
@@ -41,10 +40,8 @@ public class MainScreenActivity extends Activity {
         if (!session.isLoggedIn()) {
             logoutUser();
         }
- 
-        
         Intent i = getIntent();
-        String greeting = "Hello, "+ i.getStringExtra("name");
+        String greeting = "Hello, "+i.getStringExtra("name");
 
         // Displaying the user details on the screen
         txtGreeting.setText(greeting);
@@ -75,6 +72,9 @@ public class MainScreenActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainScreenActivity.this,
                         AppointmentsMainActivity.class);
+                intent.putExtra("name", getIntent().getStringExtra("name"));
+                intent.putExtra("email", getIntent().getStringExtra("email"));
+                intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
                 startActivity(intent);
                 finish();
 
@@ -88,9 +88,7 @@ public class MainScreenActivity extends Activity {
      * */
     private void logoutUser() {
         session.setLogin(false);
- 
-        db.deleteUsers();
- 
+
         // Launching the login activity
         Intent intent = new Intent(MainScreenActivity.this, LoginActivity.class);
         startActivity(intent);

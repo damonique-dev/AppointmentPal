@@ -11,13 +11,15 @@ public class Appointment {
 	private UUID mId;
     private Date mDate;
     private String mDoctor;
+    private String mDoctorEmail;
     private String mLocation;
 
-    public Appointment(Date d, String doc, String loc){
+    public Appointment(Date d, String doc, String docEmail, String loc){
     	//create unique ID
     	mId = UUID.randomUUID();
     	mDate = d;
     	mDoctor = doc;
+        mDoctorEmail = docEmail;
     	mLocation = loc;
 
     }

@@ -37,7 +37,6 @@ public class CreateLoginActivity extends Activity {
     private EditText inputPhoneNo;
     private ProgressDialog pDialog;
     private SessionManager session;
-    private SQLiteHandler db;
  
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,9 +56,6 @@ public class CreateLoginActivity extends Activity {
  
         // Session manager
         session = new SessionManager(getApplicationContext());
- 
-        // SQLite database handler
-        db = new SQLiteHandler(getApplicationContext());
  
         // Check if user is already logged in or not
         if (session.isLoggedIn()) {
@@ -82,6 +78,7 @@ public class CreateLoginActivity extends Activity {
                 if (!name.isEmpty() && !email.isEmpty() && !phoneno.isEmpty() && !password.isEmpty()) {
                     registerUser(name, email, phoneno, password);
                 } else {
+                    Log.e("tag", "plz enter details!");
                     Toast.makeText(getApplicationContext(),
                             "Please enter your details!", Toast.LENGTH_LONG)
                             .show();
@@ -124,27 +121,18 @@ public class CreateLoginActivity extends Activity {
  
                 try {
                     JSONObject jObj = new JSONObject(response);
-                    boolean error = jObj.getBoolean("error");
-                    if (!error) {
-                        // User successfully stored in MySQL
-                        // Now store the user in sqlite
-                        String uid = jObj.getString("uid");
- 
-                        JSONObject user = jObj.getJSONObject("user");
-                        String name = user.getString("name");
-                        String email = user.getString("email");
-                        String phoneno = user
-                                .getString("phoneno");
- 
-                        // Inserting row in users table
-                        db.addUser(name, email, uid, phoneno);
- 
+                    String error = jObj.getString("error");
+                    if (error.equals("0")) {
+                        // User successfully stored in mysql database
+                        String uid = jObj.getString("uuid");
+                        String name = jObj.getString("name");
+                        String email = jObj.getString("email");
+
+                        Log.e("tag", "user successfully registered");
                         Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
- 
+
                         // Launch login activity
-                        Intent intent = new Intent(
-                                CreateLoginActivity.this,
-                                LoginActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
@@ -152,8 +140,9 @@ public class CreateLoginActivity extends Activity {
                         // Error occurred in registration. Get the error
                         // message
                         String errorMsg = jObj.getString("error_msg");
+                        Log.e("tag", "there was an error in registration");
                         Toast.makeText(getApplicationContext(),
-                                errorMsg+"     :::THEERROR might be blank but there was an error in registration.", Toast.LENGTH_LONG).show();
+                                errorMsg+"error in registration.", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -186,7 +175,7 @@ public class CreateLoginActivity extends Activity {
         };
  
         // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        AppController.getInstance().addToRequestQueue(strReq);
     }
  
     private void showDialog() {

@@ -1,4 +1,5 @@
 var app   = require('express')();
+var uuid = require('node-uuid');
 var crypto = require("crypto");
 var http = require('http').Server(app);
 var mysql = require('mysql');
@@ -13,22 +14,51 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 	
+app.post('/appointments',function(req,res){
+	console.log(req);
 
+	uuid = req.body.uuid;
 
-app.get('/doctors',function(req,res){
+	var data = {
+		"error":1,
+		"Appointments":""
+	};
+
+	connection.query("SELECT date, doctorname, doctoremail, location FROM appointment WHERE uuid = ?",[uuid],function(err, rows, fields){
+		if(rows.length != 0){
+			data["error"] = 0;
+			data["Appointments"] = rows;
+			res.json(data);
+			console.log(data);
+		}else {
+
+			data["Appointments"] = [{"doctorname":"NO APPOINTMENTS"}];
+			res.json(data);
+		}
+
+	});
+
+});
+
+app.get('/locations',function(req,res){
+	console.log(req);
+
 	var data = {
 		"error":1,
 		"Doctors":""
 	};
 	
-	connection.query("SELECT NAME from doctor",function(err, rows, fields){
+	connection.query("SELECT * from doctor",function(err, rows, fields){
 		if(rows.length != 0){
 			data["error"] = 0;
 			data["Doctors"] = rows;
 			res.json(data);
+			console.log(data);
 		}else{
+
 			data["Doctors"] = 'No doctors Found..';
 			res.json(data);
+			console.log(data);
 		}
 	});
 });
@@ -67,7 +97,6 @@ app.post('/login',function(req,res){
 		"error":1,
 		"User":"",
 		"uuid":"",
-		"nm":""
 	};
 
 	connection.query("SELECT uuid,name,hash FROM user WHERE email = ?",[email],function(err, rows, fields){
@@ -79,13 +108,14 @@ app.post('/login',function(req,res){
 
      		var uuid = rows[0].uuid;
      		var hash = rows[0].hash;
-     		var nm = rows[0].nm;
+     		var nm = rows[0].name;
 
    			if(hash != crypto.createHash("md5").update(password).digest('hex')){
 			console.log(finalresponse.hash);
 			console.log(crypto.createHash("md5").update(password).digest('hex'));
 			data["User"] = "incorrect username/password.";
 			res.json(data);
+			console.log(data);
 		}
 
 		else{
@@ -93,6 +123,7 @@ app.post('/login',function(req,res){
 			data["User"] = nm;
 			data["uuid"] = uuid;
 			res.json(data);
+			console.log(data);
 		}
 	}
 
@@ -103,9 +134,9 @@ app.post('/login',function(req,res){
 
 app.post('/register',function(req,res){
 	console.log(req.body);
-	var uuid = require('node-uuid');
+
 	var uuid1 = uuid.v1();
-	var name = req.body.username;
+	var name = req.body.name;
 	var email = req.body.email;
 	var phoneno = req.body.phoneno
 	var password = req.body.password;
@@ -133,10 +164,12 @@ app.post('/register',function(req,res){
 				data["email"] = email;
 			}
 			res.json(data);
+			console.log(data);
 		});
 	}else{
 		data["Users"] = "Please provide all required data (i.e : Username, email, phoneno, password";
 		res.json(data);
+		console.log(data);
 	}
 	
 });
@@ -196,6 +229,6 @@ app.delete('/user',function(req,res){
 	}
 });
 
-http.listen(8080,function(){
-	console.log("Connected & Listen to port 8080");
+http.listen(7654,function(){
+	console.log("Connected & Listen to port 7654");
 });

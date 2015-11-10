@@ -17,31 +17,37 @@ import java.util.ArrayList;
 
 public class AppointmentAdapter extends ArrayAdapter<Appointment> {
 
-    public AppointmentAdapter(Context context, ArrayList<Appointment> appointments) {
+    public ArrayList<Appointment> appointments;
+    TextView tvDate;
+    TextView tvLocation;
+    TextView tvHome;
 
-       super(context, 0, appointments);
+    public AppointmentAdapter(Context context, int textViewResourceId, ArrayList<Appointment> appointments) {
+        super(context, textViewResourceId, appointments);
+        this.appointments = appointments;
     }
+
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-       // Get the data item for this position
-       Appointment appointment = getItem(position);    
-
+        // Get the data item for this position
+        Appointment appointment = getItem(position);
+        View v = convertView;
        // Check if an existing view is being reused, otherwise inflate the view
-       if (convertView == null) {
-          convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_appointment, parent, false);
+       if (v == null) {
+          v = LayoutInflater.from(getContext()).inflate(R.layout.item_appointment, null);
        }
 
        // Lookup view for data population
-       TextView tvDate = (TextView) convertView.findViewById(R.id.tvDate);
-       TextView tvName = (TextView) convertView.findViewById(R.id.tvDoctor);
-       TextView tvHome = (TextView) convertView.findViewById(R.id.tvLocation);
+       TextView tvDate = (TextView) v.findViewById(R.id.tvDate);
+       TextView tvName = (TextView) v.findViewById(R.id.tvDoctor);
+       TextView tvHome = (TextView) v.findViewById(R.id.tvLocation);
 
        // Populate the data into the template view using the data object
-       Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-       String s = formatter.format(appointment.getDate());
-       tvDate.setText(s);
+
+       tvDate.setText(appointment.getDate().toString());
        tvName.setText(appointment.getDoctor());
        tvHome.setText(appointment.getLocation());
 

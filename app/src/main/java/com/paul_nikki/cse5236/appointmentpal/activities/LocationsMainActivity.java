@@ -3,6 +3,7 @@ package com.paul_nikki.cse5236.appointmentpal.Activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,14 +12,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.paul_nikki.cse5236.appointmentpal.AppConfig;
+import com.paul_nikki.cse5236.appointmentpal.Controllers.AppController;
 import com.paul_nikki.cse5236.appointmentpal.R;
 
-public class LocationsMainActivity extends AppCompatActivity implements View.OnClickListener {
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+public class LocationsMainActivity extends AppCompatActivity implements View.OnClickListener {
+    String TAG = "LocationsMainActivity";
     Button btnFilter;
     EditText filterText;
     ListView locationsList;
     String[] locations;
+    JSONArray ja;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,18 +68,52 @@ public class LocationsMainActivity extends AppCompatActivity implements View.OnC
 
     public void GenerateLocationsList(){
         //Example Array until database is setup
-        locations = new String[]{"Location 1", "Location 2", "Location 3", "Location 4"};
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, AppConfig.URL_LOCATIONS, null, new Response.Listener<JSONObject>() {
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, locations);
-        locationsList.setAdapter(adapter);
+                    @Override
+                    public void onResponse(JSONObject response) {
+                    Log.d(TAG, response.toString());
+                        try {
+                            ja = response.getJSONArray("Doctors");
+                            int s = ja.length();
+                            locations = new String[s];
+                            for (int i = 0; i < s; i++) {
+                                JSONObject jsonobject = ja.getJSONObject(i);
+                                String doctorname = jsonobject.getString("doctorname");
+                                String practicename = jsonobject.getString("practicename");
+                                String email = jsonobject.getString("email");
+                                String address = jsonobject.getString("address");
+                                locations[i] = practicename;
+                            }
+                            ArrayAdapter<String> adapter;
+                            adapter = new ArrayAdapter<String>( getApplicationContext(), android.R.layout.simple_list_item_1, locations);
+                            locationsList.setAdapter(adapter);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG, error.toString() );
+
+                    }
+                });
+
+        // Access the RequestQueue through your singleton class.
+        AppController.getInstance().addToRequestQueue(jsObjRequest);
+
     }
 
     public void onClick(View v){
         Intent intent;
         switch (v.getId()){
             case R.id.btn_filterGo:
-//                intent = new Intent(this, AppointmentsMainActivity.class);
-//                startActivity(intent);
+                intent = new Intent(this, AppointmentsMainActivity.class);
+                startActivity(intent);
                 break;
             default:
                 break;

@@ -13,12 +13,10 @@ public class User {
     private String email;
     private Vector<Appointment> appts;
 
-    public User(String nm, String uuid, String mail){
-        //TODO: validation & encryption (?)
+    public User(String nm, String uid, String mail){
         name = nm;
-        uuid = uuid;
+        uuid = uid;
         email = mail;
-
     }
 
     public Appointment[] getAppointments(){
@@ -26,7 +24,9 @@ public class User {
         Appointment[] apptArray = new Appointment[size];
         return apptArray;
     }
-
+    public String getName(){
+        return name;
+    }
     public void addNewAppointment(Appointment a){
         appts.add(a);
     }

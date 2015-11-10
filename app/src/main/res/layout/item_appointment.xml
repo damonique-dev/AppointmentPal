@@ -1,19 +1,19 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
  android:layout_width="match_parent"
  android:layout_height="match_parent" >
 <TextView
         android:id="@+id/tvDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Name" />
+        android:gravity="center_vertical"/>
     <TextView
         android:id="@+id/tvDoctor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="something" />
+        android:gravity="center_vertical" />
     <TextView
         android:id="@+id/tvLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="HomeTown" />
-</FrameLayout>
+        android:gravity="center_vertical" />
+</LinearLayout>
