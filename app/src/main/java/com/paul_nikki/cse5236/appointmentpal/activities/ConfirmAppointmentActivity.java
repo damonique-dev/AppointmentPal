@@ -18,12 +18,18 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Vie
     Button btnMap;
     TextView whereText;
     TextView whenText;
+    String appointment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_appointment);
 
+		//get appointment info from intent
+		String uuid = getIntent().getStringExtra("uuid");
+		String doctorEmail = getIntent().getStringExtra("doctorEmail");
+		String appointment = getIntent().getStringExtra("appointmentDate");
+		
         btnConfirm = (Button)findViewById(R.id.btn_confirmAppt);
         btnConfirm.setOnClickListener(this);
         btnBackToCal = (Button)findViewById(R.id.btn_backToCalender);
@@ -31,40 +37,84 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Vie
         btnMap = (Button)findViewById(R.id.btn_mapConfirm);
         btnMap.setOnClickListener(this);
         whenText = (TextView)findViewById(R.id.lbl_confirmWhen);
+		whenText.setText(appointment);
         whereText = (TextView)findViewById(R.id.lbl_confirmWhere);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_confirm_appointment, menu);
-        return true;
-    }
+	public void createAppt(){
+	
+	 String tag_string_req = "createNewAppointment";
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_NEWAPPOINTMENT, new Response.Listener<String>() {
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Appointment response: " + response.toString());
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    String error = jObj.getString("error");
+
+                    // Check for error node in json
+                    if (error.equals("0")) {
+                        // we got a response successfully
+                        intent = new Intent(this, BaseAccountActivity.class);
+						intent.putExtra("uuid", uuid);
+						startActivity(intent);
+						
+                    } else {
+                        // Error in creating appointment. Get the error message
+                        String errorMsg = "error getting appointments";//jObj.getString("error_msg");
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    // JSON error
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Volley Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }) {
+        @Override
+        protected Map<String, String> getParams() {
+            // Posting parameters to createappointment url
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("uuid", uuid);
+			params.put("doctoremail", doctorEmail);
+			params.put("appointmentdate", appointment);
+
+            return params;
         }
-
-        return super.onOptionsItemSelected(item);
-    }
+    };
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);	
+	}
 
     public void onClick(View v){
         Intent intent;
         switch (v.getId()){
             case R.id.btn_confirmAppt:
+				//createAppointment();
                 intent = new Intent(this, BaseAccountActivity.class);
                 startActivity(intent);
                 break;
             case R.id.btn_backToCalender:
                 intent = new Intent(this, CalendarActivity.class);
+                intent.putExtra("email", getIntent().getStringExtra("email"));
+                intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
+				intent.putExtra("doctorEmail", getIntent().getStringExtra("doctorEmail"));
                 startActivity(intent);
                 break;
             case R.id.btn_mapConfirm:
