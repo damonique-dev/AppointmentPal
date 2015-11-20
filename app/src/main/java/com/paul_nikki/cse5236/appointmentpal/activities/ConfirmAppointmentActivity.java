@@ -34,6 +34,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Vie
     TextView whereText;
     TextView whenText;
     String appointment;
+
     String TAG = "ConfirmAppointmentActivity";
     String uuid;
 
@@ -47,6 +48,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Vie
         String doctorEmail = getIntent().getStringExtra("doctorEmail");
         String appointment = getIntent().getStringExtra("appointmentDate");
 
+
         btnConfirm = (Button)findViewById(R.id.btn_confirmAppt);
         btnConfirm.setOnClickListener(this);
         btnBackToCal = (Button)findViewById(R.id.btn_backToCalender);
@@ -54,6 +56,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Vie
         btnMap = (Button)findViewById(R.id.btn_mapConfirm);
         btnMap.setOnClickListener(this);
         whenText = (TextView)findViewById(R.id.lbl_confirmWhen);
+
         whenText.setText(appointment);
         whereText = (TextView)findViewById(R.id.lbl_confirmWhere);
     }
@@ -62,12 +65,14 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Vie
 
         String tag_string_req = "createNewAppointment";
 
+
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 AppConfig.URL_NEWAPPOINTMENT, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "Appointment response: " + response.toString());
+
 
                 try {
                     JSONObject jObj = new JSONObject(response);
@@ -117,18 +122,23 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Vie
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
+
     public void onClick(View v){
         Intent intent;
         switch (v.getId()){
             case R.id.btn_confirmAppt:
+
                 //createAppointment();
+
                 intent = new Intent(this, BaseAccountActivity.class);
                 startActivity(intent);
                 break;
             case R.id.btn_backToCalender:
                 intent = new Intent(this, CalendarActivity.class);
+
                 intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
                 intent.putExtra("doctorEmail", getIntent().getStringExtra("doctorEmail"));
+
                 startActivity(intent);
                 break;
             case R.id.btn_mapConfirm:

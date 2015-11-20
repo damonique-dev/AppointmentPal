@@ -42,6 +42,7 @@ import java.util.Map;
 public class CalendarActivity extends AppCompatActivity implements View.OnClickListener{
     CalendarView calendar;
     String doctorName;
+
     ArrayList<String> arrayOfStrings;
     Button eight;
     Button nine;
@@ -56,12 +57,14 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
     String TAG = "CalendarActivity";
     String doctorEmail;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //set layout of activity
         setContentView(R.layout.activity_calendar);
+
 
         retrieveUnavailableAppts();
         //get buttons
@@ -85,15 +88,14 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
         four.setOnClickListener(this);
 
         arrayOfStrings = new ArrayList<String>();
+
         initializeCalendar();
-
-
-
+		
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void initializeCalendar(){
-
+		
         //set labels
         calendar = (CalendarView) findViewById(R.id.calendar);
         //headerText = (TextView) findViewById(R.id.lbl_calendarHeader);
@@ -111,6 +113,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
 
             public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
 
+
                 SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
                 selectedDate = year+"-"+month+"-"+day;
                 String conflictDate;
@@ -126,7 +129,6 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
                         setBtn(conflictTime, false);
                     }
                 }
-
             }
 
         });
@@ -258,10 +260,85 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
             }
         };
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    
     }
+	public void retrieveUnavailableAppts(){
+	
+	 String tag_string_req = "request unavailable times";
 
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_APPOINTMENTS, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Appointment response: " + response.toString());
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    String error = jObj.getString("error");
+
+                    // Check for error node in json
+                    if (error.equals("0")) {
+                        // we got a response successfully
+                        JSONArray appointments = jObj.getJSONArray("Appointments");
+                        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+
+                        for (int i = 0; i < appointments.length(); i++) {
+                            numOfAppt++;
+                            JSONObject appt = appointments.getJSONObject(i);
+                            String date = appt.getString("date").substring(0, 10)+" "+appt.getString("date").substring(11, 19);
+                            Log.d(TAG, date);
+							arrayofStrings.add(date);
+                            Date realdate = dateformat.parse(date);
+                            String doctor = appt.getString("doctorname");
+                            String doctoremail =appt.getString("doctoremail");
+                            String location = appt.getString("location");
+                            Appointment next = new Appointment(realdate, doctor, doctoremail, location);
+                            arrayOfAppts.add(i, next);
+                        }
+						
+                    } else {
+                        // Error in login. Get the error message
+                        String errorMsg = "error getting appointments";//jObj.getString("error_msg");
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    // JSON error
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Volley Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }) {
+        @Override
+        protected Map<String, String> getParams() {
+            // Posting parameters to login url
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("uuid", uuid);
+			params.put("doctoremail", doctoremail);
+
+            return params;
+        }
+    };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);	
+	}
+	
     public void onClick(View v){
         Intent intent = new Intent(this, ConfirmAppointmentActivity.class);
+
         intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
         intent.putExtra("doctorEmail", getIntent().getStringExtra("doctorEmail"));
         switch (v.getId()){
