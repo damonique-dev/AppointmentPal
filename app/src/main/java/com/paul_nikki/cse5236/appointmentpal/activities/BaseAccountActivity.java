@@ -66,7 +66,7 @@ public class BaseAccountActivity extends AppCompatActivity  {
                 Intent intent = new Intent(BaseAccountActivity.this,
                         MainScreenActivity.class);
                 intent.putExtra("name", getIntent().getStringExtra("name"));
-                intent.putExtra("email", getIntent().getStringExtra("email"));
+
                 intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
                 startActivity(intent);
                 finish();
@@ -80,9 +80,8 @@ public class BaseAccountActivity extends AppCompatActivity  {
             public void onClick(View v) {
                 Intent intent = new Intent(BaseAccountActivity.this,
                         NewAppointmentActivity.class);
-                intent.putExtra("name", getIntent().getStringExtra("name"));
-                intent.putExtra("email", getIntent().getStringExtra("email"));
                 intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
+                intent.putExtra("name", getIntent().getStringExtra("name"));
                 startActivity(intent);
                 finish();
 

@@ -41,9 +41,7 @@ import java.util.Map;
 
 public class CalendarActivity extends AppCompatActivity implements View.OnClickListener{
     CalendarView calendar;
-    TextView headerText;
     String doctorName;
-    private ArrayList<Appointment> arrayOfAppts;
     ArrayList<String> arrayOfStrings;
     Button eight;
     Button nine;
@@ -64,7 +62,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
 
         //set layout of activity
         setContentView(R.layout.activity_calendar);
-        doctorEmail = getIntent().getStringExtra("doctorEmail");
+
         retrieveUnavailableAppts();
         //get buttons
         eight = (Button) findViewById(R.id.btn_8);
@@ -86,10 +84,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
         four = (Button) findViewById(R.id.btn_4);
         four.setOnClickListener(this);
 
-        //get appts, then initialize calendar
-        arrayOfAppts = new ArrayList<Appointment>();
         arrayOfStrings = new ArrayList<String>();
-        GenerateHeader();
         initializeCalendar();
 
 
@@ -102,7 +97,6 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
         //set labels
         calendar = (CalendarView) findViewById(R.id.calendar);
         //headerText = (TextView) findViewById(R.id.lbl_calendarHeader);
-
 
         //calendar settings
         calendar.setShowWeekNumber(false);
@@ -128,7 +122,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
                     String shortDate = date.substring(0,10);
                     if(date == selectedDate){
                         conflictTime = date.substring(11,12);
-                        Log.d(TAG, conflictTime);
+                        Log.d(TAG, "conflict time"+conflictTime);
                         setBtn(conflictTime, false);
                     }
                 }
@@ -141,58 +135,55 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
 
     public void setBtn(String btnName, boolean set) {
         switch (btnName) {
-            case "1":
-                btnName = "08";
+            case "08":
                 if (!set) {
                     eight.setVisibility(View.GONE);
                 }
                 break;
-            case "2":
-                btnName = "09";
+            case "09":
                 if (!set) {
                     nine.setVisibility(View.GONE);
                 }
                 break;
-            case "3":
-                btnName = "10";
+            case "10":
                 if (!set) {
                     ten.setVisibility(View.GONE);
                 }
                 break;
-            case "4":
-                btnName = "11";
+            case "11":
+
                 if (!set) {
                     eight.setVisibility(View.GONE);
                 }
                 break;
-            case "5":
+            case "12":
                 btnName = "12";
                 if (!set) {
                     nine.setVisibility(View.GONE);
                 }
                 break;
-            case "6":
-                btnName = "13";
+            case "13":
+
                 if (!set) {
                     ten.setVisibility(View.GONE);
                 }
                 break;
 
-            case "7":
-                btnName = "14";
+            case "14":
+
                 if (!set) {
                     nine.setVisibility(View.GONE);
                 }
                 break;
-            case "8":
-                btnName = "15";
+            case "15":
+
 
                 if (!set) {
                     ten.setVisibility(View.GONE);
                 }
                 break;
-            case "9":
-                btnName = "16";
+            case "16":
+
                 if (!set) {
                     nine.setVisibility(View.GONE);
                 }
@@ -201,22 +192,17 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
         }
     };
 
-    public void GenerateHeader(){
-        String newheader = doctorName +"'s Calendar";
-        //TODO add header to activitycalendar.xml
-        headerText = (TextView) findViewById(R.id.header);
-        headerText.setText(newheader);
-    }
+
     public void retrieveUnavailableAppts(){
 
-        String tag_string_req = "request unavailable times";
+        String tag_string_req = "request appointments";
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_FREEAPPOINTMENTS, new Response.Listener<String>() {
+                AppConfig.URL_FREE_APPOINTMENTS, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "Appointment response: " + response.toString());
+                Log.d(TAG, "Appointment Response: " + response.toString());
 
                 try {
                     JSONObject jObj = new JSONObject(response);
@@ -232,9 +218,11 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
                             JSONObject appt = appointments.getJSONObject(i);
                             String date = appt.getString("date").substring(0, 10)+" "+appt.getString("date").substring(11, 19);
                             Log.d(TAG, date);
-                            arrayOfStrings.add(date);
-
+                            arrayOfStrings.add(i, date);
                         }
+                        // Create the adapter to convert the array to views
+
+
 
                     } else {
                         // Error in login. Get the error message
@@ -262,13 +250,13 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
             protected Map<String, String> getParams() {
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("doctoremail", getIntent().getStringExtra("doctorEmail"));
+                Intent i = getIntent();
+                String doctorEmail = i.getStringExtra("doctorEmail");
+                params.put("doctoremail", doctorEmail);
 
                 return params;
             }
         };
-
-        // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
@@ -277,10 +265,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
         intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
         intent.putExtra("doctorEmail", getIntent().getStringExtra("doctorEmail"));
         switch (v.getId()){
-            /*case R.id.btn_next:
-                
-                startActivity(intent);
-                break; */
+
             case R.id.btn_8:
                 selectedDate.concat(" 08:00:00");
                 intent.putExtra("appointmentDate", selectedDate);

@@ -93,7 +93,6 @@ public class MainScreenActivity extends Activity {
                 Intent intent = new Intent(MainScreenActivity.this,
                         BaseAccountActivity.class);
                 intent.putExtra("name", getIntent().getStringExtra("name"));
-                intent.putExtra("email", getIntent().getStringExtra("email"));
                 intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
                 startActivity(intent);
                 finish();

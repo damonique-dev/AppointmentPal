@@ -14,45 +14,19 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 
-//create new appointment
-app.post('/appointments/new', function(req,res){
-
-console.log(req.body);
-
-var data = {
-	"error":1,
-	"Response":"",
-	"Appointments":""
-};
-
-connection.query("INSERT INTO APPOINTMENT (datetime, doctoremail, uuid, doctorname, location) values (?,?,?,?,?)",[datetime,doctoremail,uuid,doctorname,location],function(err,rows,fields){
-
-	if(!!err){
-
-		data["Response"] = "error inserting appointment.";
-		res.json(data);
-	}
-	else{
-		data["error"] = 0;
-		data["Response"] = "appointment created successfully! "
-		data["Appointments"] = rows;
-		res.json(data);
-	}
-
-});
-});
 	
 //get appointments for calendarview
-app.post('/appointments/doctor',function(req,res){
+app.post('/freeappointments',function(req,res){
 	console.log("recieved doctor appt request!");
 	console.log(req.body);
+	doctoremail = req.body.doctoremail;
 
 	var data = {
 		"error":1,
 		"Appointments":""
 	};
 
-	connection.query("SELECT DATETIME FROM APPOINTMENT WHERE doctoremail = ? ORDER BY DATETIME",[doctoremail],function(err,rows,fields){
+	connection.query("SELECT date FROM appointment WHERE doctoremail = ?",[doctoremail],function(err,rows,fields){
 
 		if(!!err){
 			data["Appointments"] = "error retrieving doctor schedule."
@@ -61,14 +35,11 @@ app.post('/appointments/doctor',function(req,res){
 
 		}
 		else {
-
 			data["error"] = 0;
 			data["Appointments"] = rows;
-			res.json(data);
 			console.log(data);
-
+			res.json(data);
 		}
-
 	});
 });
 

@@ -4,7 +4,7 @@ public class AppConfig {
     // Server user login url
     public static String URL_LOGIN = "http://192.168.1.59:7654/login";
 
-    public static String URL_FREEAPPOINTMENTS = "http//192.168.1.59/7654/appointments/doctor";
+    public static String URL_FREE_APPOINTMENTS = "http://192.168.1.59/7654/freeappointments";
 
     public static String URL_NEWAPPOINTMENT = "http://192.168.1.59/7654/appointments/new";
     // Server user register url
