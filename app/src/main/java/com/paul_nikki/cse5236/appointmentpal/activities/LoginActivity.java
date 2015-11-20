@@ -57,12 +57,12 @@ public class LoginActivity extends Activity {
         session = new SessionManager(getApplicationContext());
  
         // Check if user is already logged in or not
-        if (session.isLoggedIn()) {
+       /* if (session.isLoggedIn()) {
             // User is already logged in. Take him to main activity
             Intent intent = new Intent(LoginActivity.this, MainScreenActivity.class);
             startActivity(intent);
             finish();
-        }
+        }*/
  
         // Login button Click Event
         btnLogin.setOnClickListener(new View.OnClickListener() {

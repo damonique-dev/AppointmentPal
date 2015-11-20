@@ -13,9 +13,68 @@ var connection = mysql.createConnection({
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+
+//create new appointment
+app.post('/appointments/new', function(req,res){
+
+console.log(req.body);
+
+var data = {
+	"error":1,
+	"Response":"",
+	"Appointments":""
+};
+
+connection.query("INSERT INTO APPOINTMENT (datetime, doctoremail, uuid, doctorname, location) values (?,?,?,?,?)",[datetime,doctoremail,uuid,doctorname,location],function(err,rows,fields){
+
+	if(!!err){
+
+		data["Response"] = "error inserting appointment.";
+		res.json(data);
+	}
+	else{
+		data["error"] = 0;
+		data["Response"] = "appointment created successfully! "
+		data["Appointments"] = rows;
+		res.json(data);
+	}
+
+});
+});
 	
+//get appointments for calendarview
+app.post('/appointments/doctor',function(req,res){
+	console.log("recieved doctor appt request!");
+	console.log(req.body);
+
+	var data = {
+		"error":1,
+		"Appointments":""
+	};
+
+	connection.query("SELECT DATETIME FROM APPOINTMENT WHERE doctoremail = ? ORDER BY DATETIME",[doctoremail],function(err,rows,fields){
+
+		if(!!err){
+			data["Appointments"] = "error retrieving doctor schedule."
+			console.log(data);
+			res.json(data);
+
+		}
+		else {
+
+			data["error"] = 0;
+			data["Appointments"] = rows;
+			res.json(data);
+			console.log(data);
+
+		}
+
+	});
+});
+
+//get user appointments
 app.post('/appointments',function(req,res){
-	console.log(req);
+	console.log(req.body);
 
 	uuid = req.body.uuid;
 
@@ -24,14 +83,14 @@ app.post('/appointments',function(req,res){
 		"Appointments":""
 	};
 
-	connection.query("SELECT date, doctorname, doctoremail, location FROM appointment WHERE uuid = ?",[uuid],function(err, rows, fields){
+	connection.query("SELECT date, doctorname, doctoremail, location FROM appointment WHERE uuid = ? order by date",[uuid],function(err, rows, fields){
 		if(rows.length != 0){
 			data["error"] = 0;
 			data["Appointments"] = rows;
 			res.json(data);
 			console.log(data);
 		}else {
-
+			data["error"] = 1;
 			data["Appointments"] = [{"doctorname":"NO APPOINTMENTS"}];
 			res.json(data);
 		}
@@ -40,6 +99,8 @@ app.post('/appointments',function(req,res){
 
 });
 
+
+//get all locations/doctors
 app.get('/locations',function(req,res){
 	console.log(req);
 
@@ -63,6 +124,8 @@ app.get('/locations',function(req,res){
 	});
 });
 
+
+//fetch a particular doctor
 app.post('/doctor',function(req,res){
 	var nm = req.body.doctorname;
 	var data = {
@@ -89,6 +152,7 @@ app.post('/doctor',function(req,res){
 
 });
 
+//login patient
 app.post('/login',function(req,res){
 	console.log(req.body);
 	var email = req.body.email;
@@ -111,7 +175,7 @@ app.post('/login',function(req,res){
      		var nm = rows[0].name;
 
    			if(hash != crypto.createHash("md5").update(password).digest('hex')){
-			console.log(finalresponse.hash);
+			console.log(hash);
 			console.log(crypto.createHash("md5").update(password).digest('hex'));
 			data["User"] = "incorrect username/password.";
 			res.json(data);
@@ -131,7 +195,7 @@ app.post('/login',function(req,res){
 
 });
 
-
+//register user
 app.post('/register',function(req,res){
 	console.log(req.body);
 
@@ -174,15 +238,7 @@ app.post('/register',function(req,res){
 	
 });
 
-
-
-
-
-
-
 //for edit user activities
-
-
 app.put('/user',function(req,res){
 	var username = req.body.username;
 	var email = req.body.email;
@@ -207,6 +263,7 @@ app.put('/user',function(req,res){
 	}
 });
 
+//fix
 app.delete('/user',function(req,res){
 	var username = req.body.username;
 	var data = {

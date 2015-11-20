@@ -97,7 +97,7 @@ public class EditAppointmentActivity extends AppCompatActivity implements View.O
         builder1.setPositiveButton("Okay",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(EditAppointmentActivity.this, AppointmentsMainActivity.class);
+                        Intent intent = new Intent(EditAppointmentActivity.this, NewAppointmentActivity.class);
                         startActivity(intent);
                     }
                 });

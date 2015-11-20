@@ -7,7 +7,6 @@
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:paddingBottom="@dimen/activity_vertical_margin"
                 tools:context="com.paul_nikki.cse5236.appointmentpal.NewAppointmentActivity">
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,46 +23,36 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Choose a Doctor:"
         android:id="@+id/lbl_chooseDoctor"
-        android:layout_below="@+id/lbl_header"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="36dp"/>
 
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/ddl_doctors"
-        android:layout_below="@+id/lbl_chooseDoctor"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:spinnerMode="dropdown"/>
+    <ListView
+        android:id="@+id/listView2"
+        android:layout_below="@id/lbl_chooseDoctor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Choose a Location"
-        android:id="@+id/lbl_chooseLocation"
-        android:layout_below="@+id/ddl_doctors"
+        android:id="@+id/lbl_locationDisplay"
+        android:layout_below="@id/listView2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/ddl_locations"
-        android:layout_below="@+id/lbl_chooseLocation"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:spinnerMode="dropdown"/>
-
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical">
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Take First Available"
         android:id="@+id/btn_firstAvailable"
-        android:layout_below="@+id/ddl_locations"
-        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="41dp"
         android:textSize="25dp"/>
 
@@ -74,5 +63,6 @@
         android:id="@+id/btn_fromSchedule"
         android:textSize="25dp"
         android:layout_below="@+id/btn_firstAvailable"
-        android:layout_centerHorizontal="true"/>
+        android:layout_gravity="center_horizontal"/>
+    </LinearLayout>
 </RelativeLayout>

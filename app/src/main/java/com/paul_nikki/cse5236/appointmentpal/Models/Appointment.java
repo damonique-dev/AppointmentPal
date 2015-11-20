@@ -8,29 +8,31 @@ import java.util.UUID;
  * edit pw 10/19/15
  */
 public class Appointment {
-	private UUID mId;
-    private Date mDate;
-    private String mDoctor;
+	private String mId;
+    public String mDate;
+    public String mDoctor;
     private String mDoctorEmail;
-    private String mLocation;
+    public String mLocation;
 
-    public Appointment(Date d, String doc, String docEmail, String loc){
+    public Appointment(String uuid, String d, String doc, String docEmail, String loc){
     	//create unique ID
-    	mId = UUID.randomUUID();
-    	mDate = d;
-    	mDoctor = doc;
+
+    	mId = uuid;
+        mDate = d;
+        mDoctor = doc;
         mDoctorEmail = docEmail;
-    	mLocation = loc;
+        mLocation = loc;
 
     }
 
-    public UUID getId(){
+    public String getId(){
     	return mId;
     }
 
-    public Date getDate(){
+    public String getDate(){
     	return mDate;
     }
+
 
     public String getDoctor(){
     	return mDoctor;

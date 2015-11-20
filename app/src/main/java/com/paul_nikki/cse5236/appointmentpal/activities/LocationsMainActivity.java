@@ -112,7 +112,7 @@ public class LocationsMainActivity extends AppCompatActivity implements View.OnC
         Intent intent;
         switch (v.getId()){
             case R.id.btn_filterGo:
-                intent = new Intent(this, AppointmentsMainActivity.class);
+                intent = new Intent(this, NewAppointmentActivity.class);
                 startActivity(intent);
                 break;
             default:

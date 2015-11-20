@@ -34,12 +34,12 @@
             android:padding="10dp"
             android:textColor="@color/lbl_name"
             android:textSize="24dp" />
- 
-        <TextView
-            android:id="@+id/email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="13dp" />
+
+        <ListView
+            android:id="@+id/listView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
 
         <Button
             android:id="@+id/btnAppointments"
