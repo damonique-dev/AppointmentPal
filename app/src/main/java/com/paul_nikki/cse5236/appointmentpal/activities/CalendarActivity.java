@@ -260,81 +260,9 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
             }
         };
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-    
+
     }
-	public void retrieveUnavailableAppts(){
-	
-	 String tag_string_req = "request unavailable times";
 
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_APPOINTMENTS, new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, "Appointment response: " + response.toString());
-
-                try {
-                    JSONObject jObj = new JSONObject(response);
-                    String error = jObj.getString("error");
-
-                    // Check for error node in json
-                    if (error.equals("0")) {
-                        // we got a response successfully
-                        JSONArray appointments = jObj.getJSONArray("Appointments");
-                        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-
-                        for (int i = 0; i < appointments.length(); i++) {
-                            numOfAppt++;
-                            JSONObject appt = appointments.getJSONObject(i);
-                            String date = appt.getString("date").substring(0, 10)+" "+appt.getString("date").substring(11, 19);
-                            Log.d(TAG, date);
-							arrayofStrings.add(date);
-                            Date realdate = dateformat.parse(date);
-                            String doctor = appt.getString("doctorname");
-                            String doctoremail =appt.getString("doctoremail");
-                            String location = appt.getString("location");
-                            Appointment next = new Appointment(realdate, doctor, doctoremail, location);
-                            arrayOfAppts.add(i, next);
-                        }
-						
-                    } else {
-                        // Error in login. Get the error message
-                        String errorMsg = "error getting appointments";//jObj.getString("error_msg");
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
-                    }
-                } catch (JSONException e) {
-                    // JSON error
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Volley Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }) {
-        @Override
-        protected Map<String, String> getParams() {
-            // Posting parameters to login url
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("uuid", uuid);
-			params.put("doctoremail", doctoremail);
-
-            return params;
-        }
-    };
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);	
-	}
 	
     public void onClick(View v){
         Intent intent = new Intent(this, ConfirmAppointmentActivity.class);
