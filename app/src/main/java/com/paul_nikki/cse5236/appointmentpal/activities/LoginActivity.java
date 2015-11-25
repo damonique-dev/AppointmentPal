@@ -30,6 +30,7 @@ import com.paul_nikki.cse5236.appointmentpal.Helper.SessionManager;
 public class LoginActivity extends Activity {
     private static final String TAG = LoginActivity.class.getSimpleName();
     private Button btnLogin;
+    private Button bypassLogin;
 
     private Button btnLinkToRegister;
     private EditText inputEmail;
@@ -48,7 +49,7 @@ public class LoginActivity extends Activity {
         inputPassword = (EditText) findViewById(R.id.password);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
- 
+        bypassLogin = (Button) findViewById(R.id.bypassLogin);
         // Progress dialog
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
@@ -95,7 +96,18 @@ public class LoginActivity extends Activity {
                 finish();
             }
         });
- 
+        bypassLogin.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(),
+                        MainScreenActivity.class);
+                session.setLogin(true);
+                i.putExtra("name", "Dan");
+                i.putExtra("uuid", "0e2641c0-85f8-11e5-b56d-a5a3292ab26b");
+                startActivity(i);
+                finish();
+            }
+        });
     }
 
     //overriding lifecycle methods, adding log statements

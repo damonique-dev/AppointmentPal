@@ -105,11 +105,11 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
     }
     public void onClick(View v) {
         Intent intent;
-        ListView orOther = (ListView) findViewById(R.id.listView);
+        /*ListView orOther = (ListView) findViewById(R.id.listView);
         DoctorsAdapter something = (DoctorsAdapter) orOther.getAdapter();
         Doctor selectedDoctor = something.getSelectedDoctor();
         Log.d(TAG, selectedDoctor.getEmail());
-        String mail = selectedDoctor.getEmail();
+        String mail = selectedDoctor.getEmail();*/
         switch (v.getId()) {
             case R.id.btn_firstAvailable:
                 intent = new Intent(this, BaseAccountActivity.class);
@@ -121,7 +121,7 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
             case R.id.btn_fromSchedule:
                 intent = new Intent(this, CalendarActivity.class);
 
-                intent.putExtra("doctorEmail", mail);
+                intent.putExtra("doctorEmail", "drsmith@gmail.com");
                 intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
                 startActivity(intent);
                 finish();
