@@ -188,7 +188,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
         }
-    };
+    }
 
 
     public void createAppts(){

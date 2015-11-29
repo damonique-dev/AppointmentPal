@@ -67,11 +67,11 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Vie
 
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_NEWAPPOINTMENT, new Response.Listener<String>() {
+                AppConfig.URL_NEW_APPOINTMENT, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "Appointment response: " + response.toString());
+                Log.d(TAG, "Appointment response: " + response);
 
 
                 try {
@@ -110,7 +110,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Vie
             @Override
             protected Map<String, String> getParams() {
                 // Posting parameters to createappointment url
-                Map<String, String> params = new HashMap<String, String>();
+                Map<String, String> params = new HashMap<>();
                 params.put("uuid", uuid);
                 params.put("doctoremail", getIntent().getStringExtra("doctorEmail"));
                 params.put("appointmentdate", appointment);
