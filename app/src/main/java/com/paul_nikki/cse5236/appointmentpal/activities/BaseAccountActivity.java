@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,6 +40,9 @@ public class BaseAccountActivity extends AppCompatActivity  {
     String uuid;
     TextView title;
     String TAG = "BaseAccountActivity";
+    ArrayList<String> apptListArray;
+    ListView apptListView;
+    Date apptDate;
     private ArrayList<Appointment> apptArray;
 
     @Override
@@ -45,17 +50,11 @@ public class BaseAccountActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base_account);
         title = (TextView) findViewById(R.id.titleAppointments);
-
-        apptArray = new ArrayList<Appointment>();
+        apptListView = (ListView) findViewById(R.id.listView);
+        apptArray = new ArrayList<>();
+        apptListArray = new ArrayList<>();
         generateApptListView();
 
-        // Create the adapter to convert the array to views
-
-        AppointmentsAdapter adapter = new AppointmentsAdapter(this, apptArray);
-        // Attach the adapter to a ListView
-        ListView listView = (ListView) findViewById(R.id.listView1);
-
-        listView.setAdapter(adapter);
         back = (Button) findViewById(R.id.btnBack);
         newAppt = (Button)findViewById(R.id.btnNewAppt);
 
@@ -125,11 +124,27 @@ public class BaseAccountActivity extends AppCompatActivity  {
                             String doctoremail =appt.getString("doctoremail");
                             String location = appt.getString("location");
                             Appointment next = new Appointment(uuid, date, doctor, doctoremail, location);
+                            apptListArray.add(realdate + " at " + location);
                             apptArray.add(next);
                         }
                         // Create the adapter to convert the array to views
-
-
+                        ArrayAdapter<String> adapter;
+                        adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, apptListArray);
+                        apptListView.setAdapter(adapter);
+                        apptListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                String appt = ((TextView) view).getText().toString();
+                                Intent intent = new Intent(getApplicationContext(), AppointmentActivity.class);
+                                int index = appt.indexOf(" at ");
+                                appt = appt.substring(0, index);
+                                String locationName = appt.substring(index+4);
+                                intent.putExtra("LocationName", locationName);
+                                intent.putExtra("Date", apptDate);
+                                intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
+                                startActivity(intent);
+                            }
+                        });
 
                     } else {
                         // Error in login. Get the error message

@@ -1,9 +1,15 @@
 package com.paul_nikki.cse5236.appointmentpal.Activities;
  
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +23,10 @@ import com.android.volley.toolbox.StringRequest;
  
 import org.json.JSONException;
 import org.json.JSONObject;
- 
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,6 +73,16 @@ public class LoginActivity extends Activity {
             startActivity(intent);
             finish();
         }*/
+
+        if(!session.isNetworkAvailable(this)){
+            btnLogin.setEnabled(false);
+            btnLinkToRegister.setEnabled(false);
+            NoConnectionDialog();
+        }
+        else {
+            btnLogin.setEnabled(true);
+            btnLinkToRegister.setEnabled(true);
+        }
  
         // Login button Click Event
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -110,38 +129,6 @@ public class LoginActivity extends Activity {
         });
     }
 
-    //overriding lifecycle methods, adding log statements
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart() called");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause() called");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume() called");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop() called");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy() called");
-    }
- 
     /**
      * function to verify login details in mysql db
      * */
@@ -221,7 +208,7 @@ public class LoginActivity extends Activity {
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
- 
+
     private void showDialog() {
         if (!pDialog.isShowing())
             pDialog.show();
@@ -230,5 +217,20 @@ public class LoginActivity extends Activity {
     private void hideDialog() {
         if (pDialog.isShowing())
             pDialog.dismiss();
+    }
+
+    public void NoConnectionDialog(){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setTitle("No Internet Connection");
+        builder1.setMessage("Please connect to the Internet to use this app!");
+        builder1.setPositiveButton("Okay",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+                        startActivity(intent);
+                    }
+                });
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
 }

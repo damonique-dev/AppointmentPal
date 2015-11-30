@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AppointmentPal</string>
+    <string name="app_name">Appointment Pal</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -15,4 +15,17 @@
     <string name="title_activity_edit_appointment">EditAppointmentActivity</string>
     <string name="title_activity_calendar">CalendarActivity</string>
     <string name="title_activity_map">MapActivity</string>
+    <string name="eula">
+        <p>
+            By using this app, you agree to abide by the
+            <a href="https://developers.google.com/maps/terms">Google Maps Terms of Service</a>
+            and
+            <a href="https://www.google.com/intl/en/policies/terms/">Google\'s Terms of Service</a>
+            .
+        </p>
+    </string>
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
+    <string name="prefs">Prefs</string>
+    <string name="eula_accepted_key">eula_accepted</string>
 </resources>

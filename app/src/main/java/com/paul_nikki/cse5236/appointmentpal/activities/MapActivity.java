@@ -1,23 +1,24 @@
 package com.paul_nikki.cse5236.appointmentpal.Activities;
 
-import android.app.FragmentManager;
+import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
-import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.paul_nikki.cse5236.appointmentpal.Helper.EulaDialogFragment;
 import com.paul_nikki.cse5236.appointmentpal.R;
 
 import java.io.IOException;
@@ -41,6 +42,7 @@ public class MapActivity extends AppCompatActivity {
         Intent intent = getIntent();
         address = intent.getStringExtra("Location");
         officeName = intent.getStringExtra("OfficeName");
+        setUpEula();
         GetLatLong();
         setUpMapIfNeeded();
 
@@ -61,11 +63,37 @@ public class MapActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.about) {
+            String dialogText = "\u00a92015 Nikki Thomas & Paul Williams" + "\n\nLegal Notices:\n\n" +
+                    GooglePlayServicesUtil.getOpenSourceSoftwareLicenseInfo(this);
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle(R.string.app_name).setMessage(dialogText).setPositiveButton("Close",
+                    new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            alert.show();
+            return true;
+        }
+        if(id == R.id.back){
+            Intent i = new Intent(MapActivity.this, LocationActivity.class);
+            i.putExtra("LocationName", officeName);
+            startActivity(i);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setUpEula(){
+        SharedPreferences settings = getSharedPreferences(getString(R.string.prefs), 0);
+        boolean isEulaAccepted = settings.getBoolean(getString(R.string.eula_accepted_key), false);
+        if(!isEulaAccepted){
+            DialogFragment eulaDialogFragment = new EulaDialogFragment();
+            eulaDialogFragment.show(getFragmentManager(), "eula");
+        }
     }
 
     public void setUpMapIfNeeded(){
@@ -98,6 +126,5 @@ public class MapActivity extends AppCompatActivity {
             lng = geocodeMatches.get(0).getLongitude();
         }
     }
-
 
 }

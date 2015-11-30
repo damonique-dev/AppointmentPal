@@ -37,7 +37,6 @@ import java.util.Map;
 
 public class CalendarActivity extends AppCompatActivity implements View.OnClickListener{
     CalendarView calendar;
-    String doctorName;
 
     ArrayList<String> arrayOfStrings;
     Button eight;
@@ -52,6 +51,8 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
     String selectedDate;
     String TAG = "CalendarActivity";
     String doctorEmail;
+    String doctorName;
+    String locationName;
 
 
     @Override
@@ -84,6 +85,10 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
         four.setOnClickListener(this);
 
         arrayOfStrings = new ArrayList<String>();
+
+        Intent i = getIntent();
+        doctorName =  i.getStringExtra("DoctorName");
+        locationName = i.getStringExtra("LocationName");
 
         initializeCalendar();
 		
@@ -190,69 +195,69 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+//    public void createAppts(){
+//
+//        String tag_string_req = "create appointments";
+//
+//        StringRequest strReq = new StringRequest(Request.Method.POST,
+//                AppConfig.URL_NEW_APPOINTMENT, new Response.Listener<String>() {
+//
+//            @Override
+//            public void onResponse(String response) {
+//                Log.d(TAG, "Appointment Response: " + response.toString());
+//
+//                try {
+//                    JSONObject jObj = new JSONObject(response);
+//                    String error = jObj.getString("error");
+//
+//                    // Check for error node in json
+//                    if (error.equals("0")) {
+//                        //appointment
+//                        Intent intent = new Intent(CalendarActivity.this, BaseAccountActivity.class);
+//                        intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
+//                        startActivity(intent);
+//                        finish();
+//
+//
+//                    } else {
+//                        // Error in creation. Get the error message
+//                        String errorMsg = "Couldn't create appointment";//jObj.getString("error_msg");
+//                        Toast.makeText(getApplicationContext(),
+//                                errorMsg, Toast.LENGTH_LONG).show();
+//                    }
+//                } catch (JSONException e) {
+//                    // JSON error
+//                    e.printStackTrace();
+//                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//                }
+//
+//            }
+//        }, new Response.ErrorListener() {
+//
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.e(TAG, "Volley Error: " + error.getMessage());
+//                Toast.makeText(getApplicationContext(),
+//                        error.getMessage(), Toast.LENGTH_LONG).show();
+//            }
+//        }) {
+//            @Override
+//            protected Map<String, String> getParams() {
+//                // Posting parameters to login url
+//                Map<String, String> params = new HashMap<String, String>();
+//                Intent i = getIntent();
+//                String doctorEmail = i.getStringExtra("doctorEmail");
+//                params.put("uuid", i.getStringExtra("uuid"));
+//                params.put("doctoremail", doctorEmail);
+//                params.put("appointment", selectedDate);
+//
+//                return params;
+//            }
+//        };
+//        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+//
+//    }
 
-    public void createAppts(){
-
-        String tag_string_req = "create appointments";
-
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_NEW_APPOINTMENT, new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, "Appointment Response: " + response.toString());
-
-                try {
-                    JSONObject jObj = new JSONObject(response);
-                    String error = jObj.getString("error");
-
-                    // Check for error node in json
-                    if (error.equals("0")) {
-                        //appointment
-                        Intent intent = new Intent(CalendarActivity.this, BaseAccountActivity.class);
-                        intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
-                        startActivity(intent);
-                        finish();
-
-
-                    } else {
-                        // Error in creation. Get the error message
-                        String errorMsg = "Couldn't create appointment";//jObj.getString("error_msg");
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
-                    }
-                } catch (JSONException e) {
-                    // JSON error
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Volley Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                // Posting parameters to login url
-                Map<String, String> params = new HashMap<String, String>();
-                Intent i = getIntent();
-                String doctorEmail = i.getStringExtra("doctorEmail");
-                params.put("uuid", i.getStringExtra("uuid"));
-                params.put("doctoremail", doctorEmail);
-                params.put("appointment", selectedDate);
-
-                return params;
-            }
-        };
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-
-    }
     public void retrieveUnavailableAppts(){
 
         String tag_string_req = "request appointments";
@@ -324,10 +329,12 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
     }
 	
     public void onClick(View v){
-        Intent intent = new Intent(this, AppointmentActivity.class);
+        Intent intent = new Intent(this, ConfirmAppointmentActivity.class);
 
         intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
         intent.putExtra("doctorEmail", getIntent().getStringExtra("doctorEmail"));
+        intent.putExtra("DoctorName", doctorName);
+        intent.putExtra("LocationName", locationName);
         switch (v.getId()){
 
             case R.id.btn_8:
@@ -388,23 +395,23 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
 
         }
     }
-    public void alertDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        // Add the buttons
-        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                createAppts();
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                //donothing
-            }
-        });
-        // Set other dialog properties
-
-        // Create the AlertDialog
-        AlertDialog dialog = builder.create();
-
-    }
+//    public void alertDialog(){
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        // Add the buttons
+//        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int id) {
+//                createAppts();
+//            }
+//        });
+//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int id) {
+//                //donothing
+//            }
+//        });
+//        // Set other dialog properties
+//
+//        // Create the AlertDialog
+//        AlertDialog dialog = builder.create();
+//
+//    }
 }
