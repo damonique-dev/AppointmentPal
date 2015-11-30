@@ -1,18 +1,15 @@
 package com.paul_nikki.cse5236.appointmentpal.Activities;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.CalendarView;
 import android.widget.CalendarView.OnDateChangeListener;
 import android.widget.Toast;
@@ -24,16 +21,15 @@ import com.android.volley.toolbox.StringRequest;
 import com.paul_nikki.cse5236.appointmentpal.AppConfig;
 import com.paul_nikki.cse5236.appointmentpal.Controllers.AppController;
 import com.paul_nikki.cse5236.appointmentpal.R;
-import com.paul_nikki.cse5236.appointmentpal.Models.Appointment;
+
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -229,9 +225,71 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
         }
-    };
+    }
 
 
+    public void createAppts(){
+
+        String tag_string_req = "create appointments";
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_NEW_APPOINTMENT, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Appointment Response: " + response.toString());
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    String error = jObj.getString("error");
+
+                    // Check for error node in json
+                    if (error.equals("0")) {
+                        //appointment
+                        Intent intent = new Intent(CalendarActivity.this, BaseAccountActivity.class);
+                        intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
+                        startActivity(intent);
+                        finish();
+
+
+                    } else {
+                        // Error in creation. Get the error message
+                        String errorMsg = "Couldn't create appointment";//jObj.getString("error_msg");
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    // JSON error
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Volley Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting parameters to login url
+                Map<String, String> params = new HashMap<String, String>();
+                Intent i = getIntent();
+                String doctorEmail = i.getStringExtra("doctorEmail");
+                params.put("uuid", i.getStringExtra("uuid"));
+                params.put("doctoremail", doctorEmail);
+                params.put("appointment", selectedDate);
+
+                return params;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+
+    }
     public void retrieveUnavailableAppts(){
 
         String tag_string_req = "request appointments";
@@ -292,6 +350,8 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
                 Intent i = getIntent();
                 String doctorEmail = i.getStringExtra("doctorEmail");
                 params.put("doctoremail", doctorEmail);
+                params.put("uuid", i.getStringExtra("uuid"));
+                params.put("date", selectedDate);
 
                 return params;
             }
@@ -299,10 +359,9 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
 
     }
-
 	
     public void onClick(View v){
-        Intent intent = new Intent(this, ConfirmAppointmentActivity.class);
+        Intent intent = new Intent(this, AppointmentActivity.class);
 
         intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
         intent.putExtra("doctorEmail", getIntent().getStringExtra("doctorEmail"));
@@ -311,6 +370,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
             case R.id.btn_8:
                 selectedDate.concat(" 08:00:00");
                 intent.putExtra("appointmentDate", selectedDate);
+                intent.putExtra("doctoremail", "drsmith@gmail.com");
                 startActivity(intent);
                 finish();
                 break;
@@ -364,5 +424,24 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
         }
+    }
+    public void alertDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Add the buttons
+        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                createAppts();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //donothing
+            }
+        });
+        // Set other dialog properties
+
+        // Create the AlertDialog
+        AlertDialog dialog = builder.create();
+
     }
 }
