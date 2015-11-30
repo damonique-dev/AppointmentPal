@@ -137,57 +137,94 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
 
     public void setBtn(String btnName, boolean set) {
         switch (btnName) {
-            case "08":
+            case "btn_8":
                 if (!set) {
-                    eight.setVisibility(View.GONE);
+                    eight.setVisibility(View.INVISIBLE);
+                }
+                else
+                {
+                    eight.setVisibility(View.VISIBLE);
                 }
                 break;
-            case "09":
+            case "btn_9":
                 if (!set) {
-                    nine.setVisibility(View.GONE);
+                    nine.setVisibility(View.INVISIBLE);
+                }
+                else
+                {
+                    nine.setVisibility(View.VISIBLE);
                 }
                 break;
-            case "10":
+            case "btn_10":
                 if (!set) {
-                    ten.setVisibility(View.GONE);
+                    ten.setVisibility(View.INVISIBLE);
+                }
+                else
+                {
+                    ten.setVisibility(View.VISIBLE);
                 }
                 break;
-            case "11":
+            case "btn_11":
 
                 if (!set) {
-                    eight.setVisibility(View.GONE);
+                    eleven.setVisibility(View.INVISIBLE);
+                }
+                else
+                {
+                    eleven.setVisibility(View.VISIBLE);
                 }
                 break;
-            case "12":
-                btnName = "12";
+            case "btn_12":
+
                 if (!set) {
-                    nine.setVisibility(View.GONE);
+                    twelve.setVisibility(View.INVISIBLE);
+                }
+                else
+                {
+                    twelve.setVisibility(View.VISIBLE);
                 }
                 break;
-            case "13":
+
+            case "btn_1":
 
                 if (!set) {
-                    ten.setVisibility(View.GONE);
+                    one.setVisibility(View.INVISIBLE);
+                }
+                else
+                {
+                    one.setVisibility(View.VISIBLE);
                 }
                 break;
 
-            case "14":
+            case "btn_2":
 
                 if (!set) {
-                    nine.setVisibility(View.GONE);
+                    two.setVisibility(View.INVISIBLE);
+                }
+                else
+                {
+                    two.setVisibility(View.VISIBLE);
                 }
                 break;
-            case "15":
+            case "btn_3":
 
 
                 if (!set) {
-                    ten.setVisibility(View.GONE);
+                    three.setVisibility(View.INVISIBLE);
+                }
+                else
+                {
+                    three.setVisibility(View.VISIBLE);
                 }
                 break;
-            case "16":
+            case "btn_4":
 
                 if (!set) {
-                    nine.setVisibility(View.GONE);
+                    four.setVisibility(View.INVISIBLE);
+                }
+                else
+                {
+                    four.setVisibility(View.VISIBLE);
                 }
                 break;
 

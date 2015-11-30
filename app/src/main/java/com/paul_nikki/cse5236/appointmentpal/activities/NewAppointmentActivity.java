@@ -109,7 +109,7 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
         DoctorsAdapter something = (DoctorsAdapter) orOther.getAdapter();
         Doctor selectedDoctor = something.getSelectedDoctor();
         Log.d(TAG, selectedDoctor.getEmail());
-        String mail = selectedDoctor.getEmail();
+        String mail = "drsmith@gmail.com"; // selectedDoctor.getEmail();
         switch (v.getId()) {
             case R.id.btn_firstAvailable:
                 intent = new Intent(this, BaseAccountActivity.class);
