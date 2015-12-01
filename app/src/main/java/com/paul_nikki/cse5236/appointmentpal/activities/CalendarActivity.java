@@ -39,7 +39,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
     CalendarView calendar;
     String doctorName;
 
-    ArrayList<String> arrayOfStrings;
+    ArrayList<String> arrayOfStrings= new ArrayList<String>();
     Button eight;
     Button nine;
     Button ten;
@@ -57,12 +57,12 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Intent i = getIntent();
+        String doctorEmail = i.getStringExtra("doctorEmail");
+        retrieveUnavailableAppts();
         //set layout of activity
         setContentView(R.layout.activity_calendar);
 
-
-        retrieveUnavailableAppts();
         //get buttons
         eight = (Button) findViewById(R.id.btn_8);
         eight.setOnClickListener(this);
@@ -82,16 +82,16 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
         three.setOnClickListener(this);
         four = (Button) findViewById(R.id.btn_4);
         four.setOnClickListener(this);
-
-        arrayOfStrings = new ArrayList<String>();
-
         initializeCalendar();
-		
+
+
+
+
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void initializeCalendar(){
-		
+
         //set labels
         calendar = (CalendarView) findViewById(R.id.calendar);
         //headerText = (TextView) findViewById(R.id.lbl_calendarHeader);
@@ -104,24 +104,33 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
         calendar.setUnfocusedMonthDateColor(getResources().getColor(R.color.transparent));
         calendar.setWeekSeparatorLineColor(getResources().getColor(R.color.transparent));
         calendar.setSelectedDateVerticalBar(R.color.darkgreen);
-
-        calendar.setOnDateChangeListener(new OnDateChangeListener(){
+        calendar.setOnDateChangeListener(new OnDateChangeListener() {
 
             public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
-
-
+                setVisible();
+                month = month+1; //for some reason the numbered months start at 0...
+                String dayNumber;
+                if(day < 10){
+                   dayNumber = "0"+String.valueOf(day);
+                }
+                else{
+                    dayNumber = String.valueOf(day);
+                }
+                Log.d(TAG, "on selected Day Change");
                 SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-                selectedDate = year+"-"+month+"-"+day;
+                selectedDate = year + "-" + month + "-" + dayNumber;
                 String conflictDate;
                 String conflictTime;
 
-                Iterator<String> itr = arrayOfStrings.iterator();
-                while (itr.hasNext()) {
-                    String date = itr.next();
-                    String shortDate = date.substring(0,10);
-                    if(date == selectedDate){
-                        conflictTime = date.substring(11,12);
-                        Log.d(TAG, "conflict time"+conflictTime);
+                for (String x: arrayOfStrings) {
+                    String date = x;
+                    Log.d(TAG, "fulldate"+date);
+                    String shortDate = date.substring(0, 10);
+                    Log.d(TAG, "shortdate"+shortDate);
+                    Log.d(TAG, "Selected date: "+selectedDate);
+                    if (shortDate.equals(selectedDate)) {
+                        conflictTime = date.substring(11, 13);
+                        Log.d(TAG, "conflict time: "+conflictTime);
                         setBtn(conflictTime, false);
                     }
                 }
@@ -133,7 +142,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
 
     public void setBtn(String btnName, boolean set) {
         switch (btnName) {
-            case "btn_8":
+            case "08":
                 if (!set) {
                     eight.setVisibility(View.INVISIBLE);
                 }
@@ -142,7 +151,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
                     eight.setVisibility(View.VISIBLE);
                 }
                 break;
-            case "btn_9":
+            case "09":
                 if (!set) {
                     nine.setVisibility(View.INVISIBLE);
                 }
@@ -151,7 +160,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
                     nine.setVisibility(View.VISIBLE);
                 }
                 break;
-            case "btn_10":
+            case "10":
                 if (!set) {
                     ten.setVisibility(View.INVISIBLE);
                 }
@@ -160,7 +169,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
                     ten.setVisibility(View.VISIBLE);
                 }
                 break;
-            case "btn_11":
+            case "11":
 
                 if (!set) {
                     eleven.setVisibility(View.INVISIBLE);
@@ -170,7 +179,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
                     eleven.setVisibility(View.VISIBLE);
                 }
                 break;
-            case "btn_12":
+            case "12":
 
                 if (!set) {
                     twelve.setVisibility(View.INVISIBLE);
@@ -181,7 +190,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
                 }
                 break;
 
-            case "btn_1":
+            case "13":
 
                 if (!set) {
                     one.setVisibility(View.INVISIBLE);
@@ -192,7 +201,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
                 }
                 break;
 
-            case "btn_2":
+            case "14":
 
                 if (!set) {
                     two.setVisibility(View.INVISIBLE);
@@ -202,7 +211,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
                     two.setVisibility(View.VISIBLE);
                 }
                 break;
-            case "btn_3":
+            case "15":
 
 
                 if (!set) {
@@ -213,7 +222,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
                     three.setVisibility(View.VISIBLE);
                 }
                 break;
-            case "btn_4":
+            case "16":
 
                 if (!set) {
                     four.setVisibility(View.INVISIBLE);
@@ -228,7 +237,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-    public void createAppts(){
+    /*public void createAppts(){
 
         String tag_string_req = "create appointments";
 
@@ -289,7 +298,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
         };
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
 
-    }
+    }*/
     public void retrieveUnavailableAppts(){
 
         String tag_string_req = "request appointments";
@@ -309,7 +318,6 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
                     if (error.equals("0")) {
                         // we got a response successfully
                         JSONArray appointments = jObj.getJSONArray("Appointments");
-                        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 
                         for (int i = 0; i < appointments.length(); i++) {
                             JSONObject appt = appointments.getJSONObject(i);
@@ -317,7 +325,6 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
                             Log.d(TAG, date);
                             arrayOfStrings.add(i, date);
                         }
-                        // Create the adapter to convert the array to views
 
 
 
@@ -347,11 +354,9 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
             protected Map<String, String> getParams() {
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<String, String>();
-                Intent i = getIntent();
-                String doctorEmail = i.getStringExtra("doctorEmail");
-                params.put("doctoremail", doctorEmail);
-                params.put("uuid", i.getStringExtra("uuid"));
-                params.put("date", selectedDate);
+
+                params.put("doctoremail", getIntent().getStringExtra("doctorEmail"));
+
 
                 return params;
             }
@@ -359,7 +364,18 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
 
     }
-	
+	public void setVisible(){
+
+        eight.setVisibility(View.VISIBLE);
+        nine.setVisibility(View.VISIBLE);
+        ten.setVisibility(View.VISIBLE);
+        eleven.setVisibility(View.VISIBLE);
+        twelve.setVisibility(View.VISIBLE);
+        one.setVisibility(View.VISIBLE);
+        two.setVisibility(View.VISIBLE);
+        three.setVisibility(View.VISIBLE);
+        four.setVisibility(View.VISIBLE);
+    }
     public void onClick(View v){
         Intent intent = new Intent(this, AppointmentActivity.class);
 
@@ -370,7 +386,6 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
             case R.id.btn_8:
                 selectedDate.concat(" 08:00:00");
                 intent.putExtra("appointmentDate", selectedDate);
-                intent.putExtra("doctoremail", "drsmith@gmail.com");
                 startActivity(intent);
                 finish();
                 break;
@@ -425,23 +440,5 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
 
         }
     }
-    public void alertDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        // Add the buttons
-        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                createAppts();
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                //donothing
-            }
-        });
-        // Set other dialog properties
 
-        // Create the AlertDialog
-        AlertDialog dialog = builder.create();
-
-    }
 }

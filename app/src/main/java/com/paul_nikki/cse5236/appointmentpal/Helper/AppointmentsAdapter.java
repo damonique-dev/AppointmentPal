@@ -55,9 +55,8 @@ public class AppointmentsAdapter extends ArrayAdapter<Appointment> {
             e.printStackTrace();
         }
 
-        tvDate.setText(date+"   ");
-       tvName.setText(appointment.getDoctor()+"   ");
-       tvHome.setText(appointment.getLocation()+"  ");
+        tvDate.setText(date);
+       tvHome.setText(appointment.getDoctor());
 
        // Return the completed view to render on screen
        return convertView;

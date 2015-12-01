@@ -38,7 +38,7 @@ public class BaseAccountActivity extends AppCompatActivity  {
     String uuid;
     TextView title;
     String TAG = "BaseAccountActivity";
-    private ArrayList<Appointment> apptArray;
+    private ArrayList<Appointment> apptArray = new ArrayList<Appointment>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,16 +46,8 @@ public class BaseAccountActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_base_account);
         title = (TextView) findViewById(R.id.titleAppointments);
 
-        apptArray = new ArrayList<Appointment>();
-        generateApptListView();
-
         // Create the adapter to convert the array to views
-
-        AppointmentsAdapter adapter = new AppointmentsAdapter(this, apptArray);
-        // Attach the adapter to a ListView
-        ListView listView = (ListView) findViewById(R.id.listView1);
-
-        listView.setAdapter(adapter);
+        generateApptListView();
         back = (Button) findViewById(R.id.btnBack);
         newAppt = (Button)findViewById(R.id.btnNewAppt);
 
@@ -89,8 +81,15 @@ public class BaseAccountActivity extends AppCompatActivity  {
         });
 
 
-    }
 
+    }
+    public void createAdapter(ArrayList<Appointment> appts){
+        AppointmentsAdapter adapter = new AppointmentsAdapter(getApplicationContext(), appts);
+        // Attach the adapter to a ListView
+        ListView listView = (ListView) findViewById(R.id.listView1);
+        listView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
     public void generateApptListView(){
         Intent i = getIntent();
         uuid = i.getStringExtra("uuid");
@@ -121,12 +120,13 @@ public class BaseAccountActivity extends AppCompatActivity  {
                             String date = appt.getString("date").substring(0, 10)+" "+appt.getString("date").substring(11, 19);
                             Log.d(TAG, date);
                             Date realdate = dateformat.parse(date);
-                            String doctor = appt.getString("doctorname");
+                            String doctor = "dr. Smith";
                             String doctoremail =appt.getString("doctoremail");
-                            String location = appt.getString("location");
+                            String location = "123 birmingham";
                             Appointment next = new Appointment(uuid, date, doctor, doctoremail, location);
                             apptArray.add(next);
                         }
+                        createAdapter(apptArray);
                         // Create the adapter to convert the array to views
 
 
