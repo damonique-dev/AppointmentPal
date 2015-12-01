@@ -213,16 +213,19 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
         String mail = selectedDoctor.getEmail();*/
 
         switch (v.getId()) {
-            case R.id.btn_firstAvailable:
-                intent = new Intent(this, BaseAccountActivity.class);
-                intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
-                intent.putExtra("name", getIntent().getStringExtra("name"));
-                startActivity(intent);
-                finish();
-                break;
+//            case R.id.btn_firstAvailable:
+//                intent = new Intent(this, ConfirmAppointmentActivity.class);
+//                intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
+//                intent.putExtra("name", getIntent().getStringExtra("name"));
+//                intent.putExtra("DoctorName", chosenDoctor);
+//                intent.putExtra("LocationName", chosenLocation);
+//                startActivity(intent);
+//                finish();
+//                break;
             case R.id.btn_fromSchedule:
                 intent = new Intent(this, CalendarActivity.class);
-
+                intent.putExtra("DoctorName", chosenDoctor);
+                intent.putExtra("LocationName", chosenLocation);
                 intent.putExtra("doctorEmail", "drsmith@gmail.com");
                 intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
                 startActivity(intent);

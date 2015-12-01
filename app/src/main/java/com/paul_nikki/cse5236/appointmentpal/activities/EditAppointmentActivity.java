@@ -64,7 +64,7 @@ public class EditAppointmentActivity extends AppCompatActivity implements View.O
     }
 
     public void GenerateApptInfo(){
-
+        //delete from database
     }
 
     public void CancelDialog(){

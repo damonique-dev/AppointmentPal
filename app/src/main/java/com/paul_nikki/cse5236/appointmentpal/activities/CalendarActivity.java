@@ -37,7 +37,6 @@ import java.util.Map;
 
 public class CalendarActivity extends AppCompatActivity implements View.OnClickListener{
     CalendarView calendar;
-    String doctorName;
 
     ArrayList<String> arrayOfStrings= new ArrayList<String>();
     Button eight;
@@ -52,6 +51,8 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
     String selectedDate;
     String TAG = "CalendarActivity";
     String doctorEmail;
+    String doctorName;
+    String locationName;
 
 
     @Override
@@ -83,10 +84,6 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
         four = (Button) findViewById(R.id.btn_4);
         four.setOnClickListener(this);
         initializeCalendar();
-
-
-
-
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -299,6 +296,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
 
     }*/
+
     public void retrieveUnavailableAppts(){
 
         String tag_string_req = "request appointments";
@@ -377,10 +375,12 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
         four.setVisibility(View.VISIBLE);
     }
     public void onClick(View v){
-        Intent intent = new Intent(this, AppointmentActivity.class);
+        Intent intent = new Intent(this, ConfirmAppointmentActivity.class);
 
         intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
         intent.putExtra("doctorEmail", getIntent().getStringExtra("doctorEmail"));
+        intent.putExtra("DoctorName", doctorName);
+        intent.putExtra("LocationName", locationName);
         switch (v.getId()){
 
             case R.id.btn_8:
@@ -440,5 +440,23 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
 
         }
     }
-
+//    public void alertDialog(){
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        // Add the buttons
+//        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int id) {
+//                createAppts();
+//            }
+//        });
+//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int id) {
+//                //donothing
+//            }
+//        });
+//        // Set other dialog properties
+//
+//        // Create the AlertDialog
+//        AlertDialog dialog = builder.create();
+//
+//    }
 }

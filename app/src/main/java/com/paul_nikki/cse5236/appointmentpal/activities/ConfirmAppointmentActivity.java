@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,15 +16,18 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.paul_nikki.cse5236.appointmentpal.AppConfig;
 import com.paul_nikki.cse5236.appointmentpal.Controllers.AppController;
 import com.paul_nikki.cse5236.appointmentpal.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +39,10 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Vie
     TextView whereText;
     TextView whenText;
     String appointment;
+    String locationName;
+    String doctorName;
+    String address;
+    JSONArray ja;
 
     String TAG = "ConfirmAppointmentActivity";
     String uuid;
@@ -45,8 +54,9 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Vie
 
         //get appointment info from intent
         uuid = getIntent().getStringExtra("uuid");
-        String doctorEmail = getIntent().getStringExtra("doctorEmail");
-        String appointment = getIntent().getStringExtra("appointmentDate");
+        appointment = getIntent().getStringExtra("appointmentDate");
+        doctorName =  getIntent().getStringExtra("DoctorName");
+        locationName = getIntent().getStringExtra("LocationName");
 
 
         btnConfirm = (Button)findViewById(R.id.btn_confirmAppt);
@@ -56,9 +66,10 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Vie
         btnMap = (Button)findViewById(R.id.btn_mapConfirm);
         btnMap.setOnClickListener(this);
         whenText = (TextView)findViewById(R.id.lbl_confirmWhen);
+        whereText = (TextView)findViewById(R.id.lbl_confirmWhere);
 
         whenText.setText(appointment);
-        whereText = (TextView)findViewById(R.id.lbl_confirmWhere);
+        whereText.setText(doctorName + "-" + locationName);
     }
 
     public void createAppt(){
@@ -122,14 +133,48 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Vie
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
+    public void getLocationAddress(){
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, AppConfig.URL_LOCATIONS, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d(TAG+"Location", response.toString());
+                try {
+                    ja = response.getJSONArray("Doctors");
+                    int s = ja.length();
+                    for (int i = 0; i < s; i++) {
+                        JSONObject jsonobject = ja.getJSONObject(i);
+                        String practicename = jsonobject.getString("practicename");
+                        String addressDB = jsonobject.getString("address");
+                        if(practicename.equals(locationName)) {
+                            address = addressDB;
+                            break;
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, error.toString());
+
+            }
+        });
+
+        // Access the RequestQueue through your singleton class.
+        AppController.getInstance().addToRequestQueue(jsObjRequest);
+
+    }
 
     public void onClick(View v){
         Intent intent;
         switch (v.getId()){
             case R.id.btn_confirmAppt:
-
-                //createAppointment();
-
+                createAppt();
                 intent = new Intent(this, BaseAccountActivity.class);
                 startActivity(intent);
                 break;
@@ -138,11 +183,14 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Vie
 
                 intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
                 intent.putExtra("doctorEmail", getIntent().getStringExtra("doctorEmail"));
-
+                intent.putExtra("DoctorName", doctorName);
+                intent.putExtra("LocationName", locationName);
                 startActivity(intent);
                 break;
             case R.id.btn_mapConfirm:
                 intent = new Intent(this, MapActivity.class);
+                intent.putExtra("Location", address);
+                intent.putExtra("OfficeName", locationName);
                 startActivity(intent);
                 break;
             default:
