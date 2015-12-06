@@ -42,7 +42,7 @@ public class MapActivity extends AppCompatActivity {
         Intent intent = getIntent();
         address = intent.getStringExtra("Location");
         officeName = intent.getStringExtra("OfficeName");
-        setUpEula();
+        //setUpEula();
         GetLatLong();
         setUpMapIfNeeded();
 
@@ -63,38 +63,38 @@ public class MapActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.about) {
-            String dialogText = "\u00a92015 Nikki Thomas & Paul Williams" + "\n\nLegal Notices:\n\n" +
-                    GooglePlayServicesUtil.getOpenSourceSoftwareLicenseInfo(this);
-            AlertDialog.Builder alert = new AlertDialog.Builder(this);
-            alert.setTitle(R.string.app_name).setMessage(dialogText).setPositiveButton("Close",
-                    new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
-            alert.show();
-            return true;
-        }
-        if(id == R.id.back){
-            Intent i = new Intent(MapActivity.this, LocationActivity.class);
-            i.putExtra("LocationName", officeName);
-            startActivity(i);
-            return true;
-        }
+//        if (id == R.id.about) {
+//            String dialogText = "\u00a92015 Nikki Thomas & Paul Williams" + "\n\nLegal Notices:\n\n" +
+//                    GooglePlayServicesUtil.getOpenSourceSoftwareLicenseInfo(this);
+//            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+//            alert.setTitle(R.string.app_name).setMessage(dialogText).setPositiveButton("Close",
+//                    new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.cancel();
+//                        }
+//                    });
+//            alert.show();
+//            return true;
+//        }
+//        if(id == R.id.back){
+//            Intent i = new Intent(MapActivity.this, LocationActivity.class);
+//            i.putExtra("LocationName", officeName);
+//            startActivity(i);
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
 
-    public void setUpEula(){
-        SharedPreferences settings = getSharedPreferences(getString(R.string.prefs), 0);
-        boolean isEulaAccepted = settings.getBoolean(getString(R.string.eula_accepted_key), false);
-        if(!isEulaAccepted){
-            DialogFragment eulaDialogFragment = new EulaDialogFragment();
-            eulaDialogFragment.show(getFragmentManager(), "eula");
-        }
-    }
+//    public void setUpEula(){
+//        SharedPreferences settings = getSharedPreferences(getString(R.string.prefs), 0);
+//        boolean isEulaAccepted = settings.getBoolean(getString(R.string.eula_accepted_key), false);
+//        if(!isEulaAccepted){
+//            DialogFragment eulaDialogFragment = new EulaDialogFragment();
+//            eulaDialogFragment.show(getFragmentManager(), "eula");
+//        }
+//    }
 
     public void setUpMapIfNeeded(){
         if(map == null){

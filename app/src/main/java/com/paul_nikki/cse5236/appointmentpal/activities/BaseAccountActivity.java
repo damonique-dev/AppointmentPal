@@ -143,6 +143,7 @@ public class BaseAccountActivity extends AppCompatActivity  {
                                 intent.putExtra("Date", apptDate);
                                 intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
                                 startActivity(intent);
+                                finish();
                             }
                         });
 

@@ -160,6 +160,7 @@ public class AppointmentActivity extends AppCompatActivity implements View.OnCli
             case R.id.btn_editAppt:
                 intent = new Intent(this, EditAppointmentActivity.class);
                 startActivity(intent);
+                this.finish();
                 break;
             default:
                 break;

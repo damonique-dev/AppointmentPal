@@ -168,6 +168,7 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
                 intent.putExtra("Location", fullAddress);
                 intent.putExtra("OfficeName", locationName);
                 startActivity(intent);
+                finish();
                 break;
             default:
                 break;
