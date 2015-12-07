@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.CalendarView.OnDateChangeListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -53,6 +54,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
     String doctorEmail;
     String doctorName;
     String locationName;
+    TextView headerText;
 
 
     @Override
@@ -91,8 +93,8 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
 
         //set labels
         calendar = (CalendarView) findViewById(R.id.calendar);
-        //headerText = (TextView) findViewById(R.id.lbl_calendarHeader);
-
+        headerText = (TextView) findViewById(R.id.header);
+        headerText.setText("Toggle Times to set Availability");
         //calendar settings
         calendar.setShowWeekNumber(false);
 
@@ -113,7 +115,6 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
                 else{
                     dayNumber = String.valueOf(day);
                 }
-                Log.d(TAG, "on selected Day Change");
                 SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
                 selectedDate = year + "-" + month + "-" + dayNumber;
                 String conflictDate;
@@ -234,8 +235,8 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-    /*public void createAppts(){
-
+    public void createAppts(String dt){
+        selectedDate = dt;
         String tag_string_req = "create appointments";
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
@@ -254,6 +255,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
                         //appointment
                         Intent intent = new Intent(CalendarActivity.this, BaseAccountActivity.class);
                         intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
+                        intent.putExtra("name", getIntent().getStringExtra("name"));
                         startActivity(intent);
                         finish();
 
@@ -277,25 +279,23 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Volley Error: " + error.getMessage());
                 Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+                        "Typical volley error", Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
             protected Map<String, String> getParams() {
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<String, String>();
-                Intent i = getIntent();
-                String doctorEmail = i.getStringExtra("doctorEmail");
-                params.put("uuid", i.getStringExtra("uuid"));
-                params.put("doctoremail", doctorEmail);
-                params.put("appointment", selectedDate);
+                params.put("uuid", getIntent().getStringExtra("uuid"));
+                params.put("doctoremail", getIntent().getStringExtra("doctorEmail"));
+                params.put("date", selectedDate);
 
                 return params;
             }
         };
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
 
-    }*/
+    }
 
     public void retrieveUnavailableAppts(){
 
@@ -377,86 +377,70 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v){
         Intent intent = new Intent(this, ConfirmAppointmentActivity.class);
 
-        intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
+/*        intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
         intent.putExtra("doctorEmail", getIntent().getStringExtra("doctorEmail"));
         intent.putExtra("DoctorName", doctorName);
-        intent.putExtra("LocationName", locationName);
+        intent.putExtra("LocationName", locationName);*/
         switch (v.getId()){
 
             case R.id.btn_8:
-                selectedDate.concat(" 08:00:00");
-                intent.putExtra("appointmentDate", selectedDate);
-                startActivity(intent);
-                finish();
+                selectedDate = selectedDate + " 08:00:00";
+                alertDialog(selectedDate);
                 break;
             case R.id.btn_9:
-                selectedDate.concat(" 09:00:00");
-                intent.putExtra("appointmentDate", selectedDate);
-                startActivity(intent);
-                finish();
+                selectedDate = selectedDate + " 09:00:00";
+                alertDialog(selectedDate);
                 break;
             case R.id.btn_10:
-                selectedDate.concat(" 10:00:00");
-                intent.putExtra("appointmentDate", selectedDate);
-                startActivity(intent);
-                finish();
+                selectedDate = selectedDate + " 10:00:00";
+                alertDialog(selectedDate);
                 break;
             case R.id.btn_11:
-                selectedDate.concat(" 11:00:00");
-                intent.putExtra("appointmentDate", selectedDate);
-                startActivity(intent);
-                finish();
+                selectedDate = selectedDate + " 11:00:00";
+                alertDialog(selectedDate);
                 break;
             case R.id.btn_12:
-                selectedDate.concat(" 12:00:00");
-                intent.putExtra("appointmentDate", selectedDate);
-                startActivity(intent);
-                finish();
+                selectedDate = selectedDate + " 12:00:00";
+                alertDialog(selectedDate);
                 break;
             case R.id.btn_1:
-                selectedDate.concat(" 13:00:00");
-                intent.putExtra("appointmentDate", selectedDate);
-                startActivity(intent);
-                finish();
+                selectedDate = selectedDate + " 13:00:00";
+                alertDialog(selectedDate);
                 break;
             case R.id.btn_2:
-                selectedDate.concat(" 14:00:00");
-                intent.putExtra("appointmentDate", selectedDate);
-                startActivity(intent);
-                finish();
+                selectedDate = selectedDate + " 14:00:00";
+                alertDialog(selectedDate);
                 break;
             case R.id.btn_3:
-                selectedDate.concat(" 15:00:00");
-                intent.putExtra("appointmentDate", selectedDate);
-                startActivity(intent);
-                finish();
+                selectedDate = selectedDate + " 15:00:00";
+                alertDialog(selectedDate);
                 break;
             case R.id.btn_4:
-                selectedDate.concat(" 16:00:00");
-                intent.putExtra("appointmentDate", selectedDate);
-                startActivity(intent);
-                finish();
+                selectedDate = selectedDate + " 16:00:00";
+                alertDialog(selectedDate);
                 break;
 
         }
     }
-//    public void alertDialog(){
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        // Add the buttons
-//        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int id) {
-//                createAppts();
-//            }
-//        });
-//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int id) {
-//                //donothing
-//            }
-//        });
-//        // Set other dialog properties
-//
-//        // Create the AlertDialog
-//        AlertDialog dialog = builder.create();
-//
-//    }
+    public void alertDialog(final String dt){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Add the buttons
+        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                createAppts(dt);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+
+            }
+        });
+        builder.setMessage("Appointment time "+dt.substring(0,10)+" at "+dt.substring(11, 16)+" okay?");
+
+        // Create the AlertDialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
 }

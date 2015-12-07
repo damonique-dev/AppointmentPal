@@ -139,10 +139,10 @@ public class CreateLoginActivity extends Activity {
  
                         // Error occurred in registration. Get the error
                         // message
-                        String errorMsg = jObj.getString("error_msg");
+
                         Log.e("tag", "there was an error in registration");
                         Toast.makeText(getApplicationContext(),
-                                errorMsg+"error in registration.", Toast.LENGTH_LONG).show();
+                               "error in registration.", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

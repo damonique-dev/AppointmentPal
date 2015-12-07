@@ -118,17 +118,77 @@ public class LoginActivity extends Activity {
         bypassLogin.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(),
-                        MainScreenActivity.class);
-                session.setLogin(true);
-                i.putExtra("name", "Dan");
-                i.putExtra("uuid", "0e2641c0-85f8-11e5-b56d-a5a3292ab26b");
-                startActivity(i);
-                finish();
+                getSmsCode();
             }
         });
     }
+    public void getSmsCode(){
+        String tag_string_req = "req_login";
 
+        StringRequest strReq = new StringRequest(Method.POST,
+                AppConfig.URL_GETSMSCODE, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Login Response: " + response.toString());
+                hideDialog();
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    String error = jObj.getString("error");
+
+                    // Check for error node in json
+                    if (error.equals("0")) {
+                        // code sent
+
+
+                        // Launch main activity
+                        Intent intent = new Intent(LoginActivity.this,
+                                SMScodeActivity.class);
+                        intent.putExtra("email", inputEmail.getText().toString().trim());
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        // Error in login. Get the error message
+                        String errorMsg = "error in login";//jObj.getString("error_msg");
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    // JSON error
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Login Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        "Incorrect Username/password", Toast.LENGTH_LONG).show();
+                hideDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting parameters to login url
+                Map<String, String> params = new HashMap<String, String>();
+                String email = inputEmail.getText().toString().trim();
+                String password = inputPassword.getText().toString().trim();
+                params.put("email", email);
+                params.put("password", password);
+
+                return params;
+            }
+
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
     /**
      * function to verify login details in mysql db
      * */

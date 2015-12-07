@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -122,32 +120,16 @@ public class BaseAccountActivity extends AppCompatActivity  {
                             String date = appt.getString("date").substring(0, 10)+" "+appt.getString("date").substring(11, 19);
                             Log.d(TAG, date);
                             Date realdate = dateformat.parse(date);
-                            String doctor = "dr. Smith";
+                            String doctor = ", Dr. Smith";
                             String doctoremail =appt.getString("doctoremail");
-                            String location = "123 birmingham";
+                            String location = ", 582 Polaris Parkway";
                             Appointment next = new Appointment(uuid, date, doctor, doctoremail, location);
-                            apptListArray.add(realdate + " at " + location);
                             apptArray.add(next);
                         }
                         createAdapter(apptArray);
                         // Create the adapter to convert the array to views
-                        ArrayAdapter<String> adapter;
-                        adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, apptListArray);
-                        apptListView.setAdapter(adapter);
-                        apptListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                String appt = ((TextView) view).getText().toString();
-                                Intent intent = new Intent(getApplicationContext(), AppointmentActivity.class);
-                                int index = appt.indexOf(" at ");
-                                appt = appt.substring(0, index);
-                                String locationName = appt.substring(index+4);
-                                intent.putExtra("LocationName", locationName);
-                                intent.putExtra("Date", apptDate);
-                                intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
-                                startActivity(intent);
-                            }
-                        });
+
+
 
                     } else {
                         // Error in login. Get the error message

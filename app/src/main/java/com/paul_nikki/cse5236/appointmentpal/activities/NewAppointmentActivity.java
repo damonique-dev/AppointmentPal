@@ -41,6 +41,8 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
     String chosenDoctor;
     ArrayList<String> locations;
     ArrayList<String> doctorsList;
+    ArrayList<String> emailList = new ArrayList<String>();
+    ArrayList<String> fullDoctorList = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,6 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
         btnFirstAvailable.setOnClickListener(this);
         btnFromSchedule = (Button) findViewById(R.id.btn_fromSchedule);
         btnFromSchedule.setOnClickListener(this);
-
         locations = new ArrayList<>();
         doctorsList = new ArrayList<>();
 
@@ -81,6 +82,8 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
                         JSONArray doctors = jObj.getJSONArray("Doctors");
                         for (int i = 0; i < doctors.length(); i++) {
                             JSONObject doctor = doctors.getJSONObject(i);
+                            fullDoctorList.add(doctor.getString("doctorname"));
+                            emailList.add(doctor.getString("email"));
                             String practicename = doctor.getString("practicename");
                             if(!locations.contains(practicename)){
                                 locations.add(practicename);
@@ -171,6 +174,7 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
                             public void onItemSelected(AdapterView<?> parent, View view,
                                                        int position, long id) {
                                 chosenDoctor = parent.getItemAtPosition(position).toString();
+                                Log.d(TAG, chosenDoctor);
                             }
                             @Override
                             public void onNothingSelected(AdapterView<?> arg0) {
@@ -204,29 +208,24 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
     }
     public void onClick(View v) {
         Intent intent;
-        /*ListView orOther = (ListView) findViewById(R.id.listView);
-        DoctorsAdapter something = (DoctorsAdapter) orOther.getAdapter();
-        Doctor selectedDoctor = something.getSelectedDoctor();
-        Log.d(TAG, selectedDoctor.getEmail());
-        String mail = "drsmith@gmail.com"; // selectedDoctor.getEmail();
 
-        String mail = selectedDoctor.getEmail();*/
 
         switch (v.getId()) {
-//            case R.id.btn_firstAvailable:
-//                intent = new Intent(this, ConfirmAppointmentActivity.class);
-//                intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
-//                intent.putExtra("name", getIntent().getStringExtra("name"));
-//                intent.putExtra("DoctorName", chosenDoctor);
-//                intent.putExtra("LocationName", chosenLocation);
-//                startActivity(intent);
-//                finish();
-//                break;
+           case R.id.btn_firstAvailable:
+                intent = new Intent(this, BaseAccountActivity.class);
+                intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
+                intent.putExtra("name", getIntent().getStringExtra("name"));
+                startActivity(intent);
+                finish();
+                break;
             case R.id.btn_fromSchedule:
                 intent = new Intent(this, CalendarActivity.class);
                 intent.putExtra("DoctorName", chosenDoctor);
                 intent.putExtra("LocationName", chosenLocation);
-                intent.putExtra("doctorEmail", "drsmith@gmail.com");
+                String doctorEmail = emailList.get(fullDoctorList.indexOf(chosenDoctor));
+                Log.d(TAG, doctorEmail);
+                intent.putExtra("name", getIntent().getStringExtra("name"));
+                intent.putExtra("doctorEmail", doctorEmail);
                 intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
                 startActivity(intent);
                 finish();
