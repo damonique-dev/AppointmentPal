@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Appointment"
+        android:text="Appointment Details"
         android:id="@+id/lbl_headerr"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -25,26 +25,12 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Date:"
-        android:id="@+id/lbl_Date"
+        android:id="@+id/lbl_date"
         android:layout_below="@+id/lbl_headerr"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_marginTop="38dp"
-        android:textSize="30dp"
+        android:textSize="24dp"
         android:textStyle="bold"
         android:textIsSelectable="true"
-        android:textColor="@color/white"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Monday, Oct 12th, 2015"
-        android:id="@+id/lbl_apptDate"
-        android:textSize="25dp"
-        android:layout_alignBottom="@+id/lbl_Date"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:textColor="@color/white"/>
 
     <TextView
@@ -53,13 +39,11 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Doctor:"
         android:id="@+id/lbl_doctor"
-        android:textSize="30dp"
+        android:textSize="24dp"
         android:textStyle="bold"
         android:textIsSelectable="true"
         android:textColor="@color/white"
-        android:layout_above="@+id/lbl_location"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_below="@+id/lbl_date" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -67,47 +51,30 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Location:"
         android:id="@+id/lbl_location"
-        android:textSize="30dp"
+        android:textSize="24dp"
         android:textStyle="bold"
         android:textIsSelectable="true"
         android:textColor="@color/white"
-        android:layout_above="@+id/lbl_apptLocation"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Dr. Smith"
-        android:id="@+id/lbl_apptDoctor"
-        android:textSize="25dp"
-        android:layout_alignTop="@+id/lbl_doctor"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:textColor="@color/white"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="123 5th Street Dublin, Oh"
-        android:id="@+id/lbl_apptLocation"
-        android:textSize="25dp"
-        android:textColor="@color/white"
-        android:layout_centerVertical="true"
-        android:layout_alignRight="@+id/lbl_apptDoctor"
-        android:layout_alignEnd="@+id/lbl_apptDoctor"/>
-
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/lbl_doctor"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit Appointment"
+        android:text="Back"
+        android:id="@+id/btn_bacc"
+        android:layout_below="@id/lbl_location"
+        android:background="@color/darkgreen"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel Appointment"
         android:id="@+id/btn_editAppt"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="54dp"
         android:textSize="25dp"
         android:layout_alignLeft="@+id/lbl_headerr"
         android:layout_alignStart="@+id/lbl_headerr"
-        android:background="@color/darkgreen"/>
+        android:background="@color/btn_logut_bg"/>
+
 </RelativeLayout>

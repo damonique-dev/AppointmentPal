@@ -1,5 +1,7 @@
 package com.paul_nikki.cse5236.appointmentpal.Activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,11 +37,13 @@ import java.util.Map;
 public class AppointmentActivity extends AppCompatActivity implements View.OnClickListener {
 
     String TAG = "AppointmentActivity";
-    Button btnEditAppt;
+    Button btnDelAppt;
+    Button btnBack;
     TextView dateText;
     TextView doctorText;
     TextView locationText;
-    Date apptDate;
+    String apptDate;
+    String doctorname;
     String locationName;
     String uuid;
 
@@ -48,16 +52,20 @@ public class AppointmentActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment);
 
-
-        btnEditAppt = (Button)findViewById(R.id.btn_editAppt);
-        btnEditAppt.setOnClickListener(this);
-        dateText = (TextView)findViewById(R.id.lbl_apptDate);
-        doctorText = (TextView)findViewById(R.id.lbl_apptDoctor);
-        locationText = (TextView)findViewById(R.id.lbl_apptLocation);
-        apptDate = (Date)getIntent().getSerializableExtra("Date");
-        locationName = getIntent().getStringExtra("LocationName");
+        btnBack = (Button) findViewById(R.id.btn_bacc);
+        btnBack.setOnClickListener(this);
+        btnDelAppt = (Button)findViewById(R.id.btn_editAppt);
+        btnDelAppt.setOnClickListener(this);
+        dateText = (TextView)findViewById(R.id.lbl_date);
+        doctorText = (TextView)findViewById(R.id.lbl_doctor);
+        locationText = (TextView)findViewById(R.id.lbl_location);
+        apptDate = getIntent().getStringExtra("date");
+        locationName = getIntent().getStringExtra("address");
         uuid = getIntent().getStringExtra("uuid");
-        GenerateApptInfo();
+        doctorname = getIntent().getStringExtra("doctorname") + " - " + getIntent().getStringExtra("practicename");
+        dateText.append(" "+apptDate);
+        locationText.append(" " + locationName);
+        doctorText.append(" "+doctorname);
     }
 
     @Override
@@ -82,15 +90,15 @@ public class AppointmentActivity extends AppCompatActivity implements View.OnCli
         return super.onOptionsItemSelected(item);
     }
 
-    public void GenerateApptInfo(){
+    public void deleteAppointment(){
         String tag_string_req = "request appointments";
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_APPOINTMENTS, new Response.Listener<String>() {
+                AppConfig.URL_DELETEAPPOINTMENT, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "Appointment Response: " + response.toString());
+                Log.d(TAG, "Delete response " + response.toString());
 
                 try {
                     JSONObject jObj = new JSONObject(response);
@@ -98,35 +106,23 @@ public class AppointmentActivity extends AppCompatActivity implements View.OnCli
 
                     // Check for error node in json
                     if (error.equals("0")) {
-                        // we got a response successfully
-                        JSONArray appointments = jObj.getJSONArray("Appointments");
-                        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+                        //toast and go to new intent
+                        Toast.makeText(getApplicationContext(), "Successfully deleted", Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(AppointmentActivity.this, BaseAccountActivity.class);
+                        i.putExtra("uuid", uuid);
+                        i.putExtra("name", getIntent().getStringExtra("name"));
+                        startActivity(i);
+                        finish();
 
-                        for (int i = 0; i < appointments.length(); i++) {
-                            JSONObject appt = appointments.getJSONObject(i);
-                            String date = appt.getString("date").substring(0, 10)+" "+appt.getString("date").substring(11, 19);
-                            Date realdate = dateformat.parse(date);
-                            String doctor = appt.getString("doctorname");
-                            String doctoremail =appt.getString("doctoremail");
-                            String location = appt.getString("location");
-                            if(apptDate.equals(realdate) && location.equals(locationName)){
-                                dateText.setText(realdate.toString());
-                                doctorText.setText(doctor);
-                                locationText.setText(location);
-                            }
-                        }
                     } else {
-                        // Error in login. Get the error message
-                        String errorMsg = "error getting appointments";//jObj.getString("error_msg");
+                        //toast the error
                         Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
+                                "could not delete", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     // JSON error
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                } catch (ParseException e) {
-                    e.printStackTrace();
                 }
 
             }
@@ -143,7 +139,9 @@ public class AppointmentActivity extends AppCompatActivity implements View.OnCli
             protected Map<String, String> getParams() {
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("uuid", uuid);
+                params.put("uuid", getIntent().getStringExtra("uuid"));
+                params.put("date", getIntent().getStringExtra("date"));
+                params.put("doctoremail", getIntent().getStringExtra("doctoremail"));
 
                 return params;
             }
@@ -153,14 +151,36 @@ public class AppointmentActivity extends AppCompatActivity implements View.OnCli
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
 
     }
+    public void alertDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Add the buttons
+        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                deleteAppointment();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+
+            }
+        });
+        builder.setMessage("Are you sure you want to delete this appointment?");
+
+        // Create the AlertDialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
 
     public void onClick(View v){
         Intent intent;
         switch (v.getId()){
             case R.id.btn_editAppt:
-                intent = new Intent(this, EditAppointmentActivity.class);
-                startActivity(intent);
-                this.finish();
+                alertDialog();
+                break;
+            case R.id.btn_bacc:
+                finish();
                 break;
             default:
                 break;

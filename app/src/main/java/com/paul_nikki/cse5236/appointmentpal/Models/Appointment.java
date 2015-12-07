@@ -13,8 +13,9 @@ public class Appointment {
     public String mDoctor;
     private String mDoctorEmail;
     public String mLocation;
+    public String mLocationName;
 
-    public Appointment(String uuid, String d, String doc, String docEmail, String loc){
+    public Appointment(String uuid, String d, String doc, String docEmail, String loc, String locName){
     	//create unique ID
 
     	mId = uuid;
@@ -22,7 +23,7 @@ public class Appointment {
         mDoctor = doc;
         mDoctorEmail = docEmail;
         mLocation = loc;
-
+        mLocationName = locName;
     }
 
     public String getId(){
@@ -33,7 +34,8 @@ public class Appointment {
     	return mDate;
     }
 
-
+    public String getDoctorEmail() {return mDoctorEmail; }
+    public String getLocationName() { return mLocationName; }
     public String getDoctor(){
     	return mDoctor;
     }

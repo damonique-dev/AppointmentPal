@@ -11,7 +11,8 @@
         android:textColor="@color/white"
         android:id="@+id/tvDoctor"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvDate"/>
     <TextView
         android:textColor="@color/white"
         android:id="@+id/tvLocation"

@@ -82,7 +82,7 @@ public class MainScreenActivity extends Activity {
                 Intent intent = new Intent(MainScreenActivity.this,
                         LocationsMainActivity.class);
                 startActivity(intent);
-                finish();
+
 
             }
         });
@@ -95,7 +95,7 @@ public class MainScreenActivity extends Activity {
                 intent.putExtra("name", getIntent().getStringExtra("name"));
                 intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
                 startActivity(intent);
-                finish();
+
 
             }
         });

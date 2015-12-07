@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -88,6 +90,23 @@ public class BaseAccountActivity extends AppCompatActivity  {
         // Attach the adapter to a ListView
         ListView listView = (ListView) findViewById(R.id.listView1);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent intent = new Intent(getApplicationContext(), AppointmentActivity.class);
+                Appointment clickedAppt = apptArray.get(position);
+                intent.putExtra("name", getIntent().getStringExtra("name"));
+                intent.putExtra("doctorname", clickedAppt.getDoctor());
+                intent.putExtra("address", clickedAppt.getLocation());
+                intent.putExtra("date", clickedAppt.getDate());
+                intent.putExtra("uuid", clickedAppt.getId());
+                intent.putExtra("doctoremail", clickedAppt.getDoctorEmail());
+                intent.putExtra("practicename", clickedAppt.getLocationName());
+                startActivity(intent);
+            }
+        });
         adapter.notifyDataSetChanged();
     }
     public void generateApptListView(){
@@ -114,39 +133,23 @@ public class BaseAccountActivity extends AppCompatActivity  {
                         // we got a response successfully
                         JSONArray appointments = jObj.getJSONArray("Appointments");
                         SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-
+                       TextView title = (TextView) findViewById(R.id.titleAppointments);
+                        title.setText(appointments.length()+" Appointments");
+                        appointments.length();
                         for (int i = 0; i < appointments.length(); i++) {
                             JSONObject appt = appointments.getJSONObject(i);
                             String date = appt.getString("date").substring(0, 10)+" "+appt.getString("date").substring(11, 19);
                             Log.d(TAG, date);
                             Date realdate = dateformat.parse(date);
-                            String doctor = ", Dr. Smith";
+                            String doctor = appt.getString("doctorname");
                             String doctoremail =appt.getString("doctoremail");
-                            String location = ", 582 Polaris Parkway";
-                            Appointment next = new Appointment(uuid, date, doctor, doctoremail, location);
+                            String location = appt.getString("address");
+                            String locationName = appt.getString("practicename");
+                            Appointment next = new Appointment(uuid, date, doctor, doctoremail, location, locationName);
                             apptArray.add(next);
                         }
                         createAdapter(apptArray);
                         // Create the adapter to convert the array to views
-
-                        ArrayAdapter<String> adapter;
-                        adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, apptListArray);
-                        apptListView.setAdapter(adapter);
-                        apptListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                String appt = ((TextView) view).getText().toString();
-                                Intent intent = new Intent(getApplicationContext(), AppointmentActivity.class);
-                                int index = appt.indexOf(" at ");
-                                appt = appt.substring(0, index);
-                                String locationName = appt.substring(index+4);
-                                intent.putExtra("LocationName", locationName);
-                                intent.putExtra("Date", apptDate);
-                                intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
-                                startActivity(intent);
-                                finish();
-                            }
-                        });
 
 
                     } else {

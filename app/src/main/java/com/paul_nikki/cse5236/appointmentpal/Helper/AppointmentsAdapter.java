@@ -47,19 +47,9 @@ public class AppointmentsAdapter extends ArrayAdapter<Appointment> {
        // Populate the data into the template view using the data object
        String date = appointment.getDate();
 
-        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-        try {
-            Date appointmentDate = dateformat.parse(date);
-            appointmentDate.setMonth(appointmentDate.getMonth()-1);
-            appointmentDate.setYear(appointmentDate.getYear()+1);
-            date = appointmentDate.toString();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        tvDate.setText(date);
-        tvName.setText(appointment.getDoctor());
-       tvHome.setText(appointment.getLocation());
+        tvDate.setText(date.substring(0, 16)+", ");
+        tvName.setText(appointment.getDoctor()+", ");
+       tvHome.setText(appointment.getLocationName());
 
        // Return the completed view to render on screen
        return convertView;

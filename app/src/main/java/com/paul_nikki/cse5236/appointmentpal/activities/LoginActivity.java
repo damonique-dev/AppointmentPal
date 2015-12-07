@@ -112,7 +112,6 @@ public class LoginActivity extends Activity {
                 Intent i = new Intent(getApplicationContext(),
                         CreateLoginActivity.class);
                 startActivity(i);
-                finish();
             }
         });
         bypassLogin.setOnClickListener(new View.OnClickListener() {
