@@ -111,10 +111,12 @@ public class EditAppointmentActivity extends AppCompatActivity implements View.O
             case R.id.btn_reschedule:
                 intent = new Intent(this, CalendarActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.btn_map:
                 intent = new Intent(this, MapActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.btn_cancelAppt:
                 CancelDialog();

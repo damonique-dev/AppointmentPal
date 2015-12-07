@@ -177,6 +177,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Vie
                 createAppt();
                 intent = new Intent(this, BaseAccountActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.btn_backToCalender:
                 intent = new Intent(this, CalendarActivity.class);
@@ -186,12 +187,14 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Vie
                 intent.putExtra("DoctorName", doctorName);
                 intent.putExtra("LocationName", locationName);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.btn_mapConfirm:
                 intent = new Intent(this, MapActivity.class);
                 intent.putExtra("Location", address);
                 intent.putExtra("OfficeName", locationName);
                 startActivity(intent);
+                finish();
                 break;
             default:
                 break;

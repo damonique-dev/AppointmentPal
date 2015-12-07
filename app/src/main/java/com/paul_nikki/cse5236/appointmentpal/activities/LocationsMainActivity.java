@@ -136,6 +136,7 @@ public class LocationsMainActivity extends AppCompatActivity implements View.OnC
                     Intent intent = new Intent(getApplicationContext(), LocationActivity.class);
                     intent.putExtra("LocationName", locationName);
                     startActivity(intent);
+                    finish();
                 }
             });
         }

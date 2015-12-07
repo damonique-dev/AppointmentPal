@@ -288,6 +288,7 @@ public class LoginActivity extends Activity {
                     public void onClick(DialogInterface dialog, int id) {
                         Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
                         startActivity(intent);
+                        finish();
                     }
                 });
         AlertDialog alert11 = builder1.create();

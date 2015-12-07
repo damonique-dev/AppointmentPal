@@ -129,6 +129,24 @@ public class BaseAccountActivity extends AppCompatActivity  {
                         createAdapter(apptArray);
                         // Create the adapter to convert the array to views
 
+                        ArrayAdapter<String> adapter;
+                        adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, apptListArray);
+                        apptListView.setAdapter(adapter);
+                        apptListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                String appt = ((TextView) view).getText().toString();
+                                Intent intent = new Intent(getApplicationContext(), AppointmentActivity.class);
+                                int index = appt.indexOf(" at ");
+                                appt = appt.substring(0, index);
+                                String locationName = appt.substring(index+4);
+                                intent.putExtra("LocationName", locationName);
+                                intent.putExtra("Date", apptDate);
+                                intent.putExtra("uuid", getIntent().getStringExtra("uuid"));
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
 
 
                     } else {
