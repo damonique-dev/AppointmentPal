@@ -37,7 +37,7 @@
     android:layout_height="wrap_content"
     android:padding="10dp"
     android:background="@color/grey"
-    android:text="BACK"
+    android:text="Back"
     android:textColor="@color/white"
     android:layout_alignParentBottom="true"
     android:layout_alignParentLeft="true"

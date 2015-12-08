@@ -63,28 +63,40 @@
         android:layout_alignStart="@+id/ddlLocations"
         android:popupBackground="#36648B"
         />
-
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Take First Available"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        >
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Choose from Schedule"
+            android:id="@+id/btn_fromSchedule"
+            android:textSize="25dp"
+            android:background="@color/darkgreen"
+            android:textColor="@color/white"
+            android:layout_marginTop="38dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerHorizontal="true"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Back"
         android:id="@+id/btn_firstAvailable"
-        android:layout_below="@+id/ddlDoctors"
         android:layout_centerHorizontal="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_marginTop="66dp"
         android:textSize="25dp"
-        android:background="@color/darkgreen"/>
+        android:textColor="@color/white"
+        android:background="@color/grey"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Choose from Schedule"
-        android:id="@+id/btn_fromSchedule"
-        android:textSize="25dp"
-        android:background="@color/darkgreen"
-        android:layout_marginTop="38dp"
-        android:layout_below="@+id/btn_firstAvailable"
-        android:layout_centerHorizontal="true"/>
 
+  </LinearLayout>
 
 </RelativeLayout>

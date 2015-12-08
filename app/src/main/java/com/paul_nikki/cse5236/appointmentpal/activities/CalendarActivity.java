@@ -94,7 +94,8 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
         //set labels
         calendar = (CalendarView) findViewById(R.id.calendar);
         headerText = (TextView) findViewById(R.id.header);
-        headerText.setText("Toggle Times to set Availability");
+        String doctorname = getIntent().getStringExtra("DoctorName");
+        headerText.setText(doctorname +"'s Schedule");
         //calendar settings
         calendar.setShowWeekNumber(false);
 
